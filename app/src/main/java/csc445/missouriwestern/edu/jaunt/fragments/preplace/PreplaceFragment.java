@@ -66,9 +66,15 @@ public class PreplaceFragment extends Fragment {
 
         getSearchHistory();
 
-        sectionAdapter.addSection(new PlaceSection("This week", thisWeekRecords));
-        sectionAdapter.addSection(new PlaceSection("Last week", lastWeekRecords));
-        sectionAdapter.addSection(new PlaceSection("Previous Searches", otherRecords));
+        if(thisWeekRecords.size() > 0) {
+            sectionAdapter.addSection(new PlaceSection("This week", thisWeekRecords));
+        }
+        if(lastWeekRecords.size() > 0) {
+            sectionAdapter.addSection(new PlaceSection("Last week", lastWeekRecords));
+        }
+        if(otherRecords.size() > 0) {
+            sectionAdapter.addSection(new PlaceSection("Previous Searches", otherRecords));
+        }
 
         // Set up your RecyclerView with the SectionedRecyclerViewAdapter
         RecyclerView recyclerView = fragmentView.findViewById(R.id.place_recyclerview);
