@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/first_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toStartOf="@+id/last_name"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/first_name_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/first_name"
+            android:inputType="textPersonName" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/last_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/first_name"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/last_name_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/last_name"
+            android:inputType="textPersonName" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_name">
+
+        <EditText
+            android:id="@+id/email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email">
+
+        <EditText
+            android:id="@+id/phone_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/phone_number"
+            android:inputType="phone" />
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/birthday"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone">
+
+        <EditText
+            android:id="@+id/birthday_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/birth_day"
+            android:inputType="date"
+            android:drawableEnd="@drawable/ic_arrow_down_black_24dp"
+            android:drawableTint="@color/colorText"/>
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/address1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/birthday">
+
+        <EditText
+            android:id="@+id/address1_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/address_line_1"
+            android:inputType="textPostalAddress" />
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/city_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toStartOf="@+id/zipcode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address1">
+
+        <EditText
+            android:id="@+id/city_state_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/city_state"
+            android:inputType="textPostalAddress" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/zipcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toEndOf="@+id/city_state"
+        app:layout_constraintTop_toBottomOf="@+id/address1">
+
+        <EditText
+            android:id="@+id/zipcode_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/zip_code"
+            android:inputType="textPostalAddress"
+            android:textAlignment="center" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/driver_license"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/zipcode">
+
+        <EditText
+            android:id="@+id/driver_license_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/upload_driver_license"
+            android:inputType="text"
+            android:drawableEnd="@drawable/ic_arrow_down_black_24dp"
+            android:drawableTint="@color/colorText"/>
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_submit_btn"
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/driver_license"
+        android:onClick="registerButtonClicked"/>
+</android.support.constraint.ConstraintLayout>

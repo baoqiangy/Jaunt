@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppNameImage">
+        <attr name="render_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomTextInputLayoutStyle">
+        <attr name="helperText" format="string"/>
+        <attr name="helperTextColor" format="color|reference"/>
+    </declare-styleable>
+</resources>

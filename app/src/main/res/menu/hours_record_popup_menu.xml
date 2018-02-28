@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".AccountActivity">
+    <item
+        android:id="@+id/hours_record_edit"
+        android:icon="@drawable/ic_edit_black_24dp"
+        android:title="@string/edit"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/hours_record_delete"
+        android:icon="@drawable/ic_delete_black_24dp"
+        android:title="@string/delete"
+        app:showAsAction="always" />
+</menu>

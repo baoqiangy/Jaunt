@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="6dp">
+
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomCondensedTextView
+        android:id="@+id/hours_day"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Monday"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/hours_record_more_vert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextView
+        android:id="@+id/hours_hours"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="10AM - 12PM"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/hours_record_more_vert"
+        app:layout_constraintStart_toStartOf="@+id/hours_day"
+        app:layout_constraintTop_toBottomOf="@+id/hours_day" />
+
+    <ImageView
+        android:id="@+id/hours_record_more_vert"
+        android:layout_width="30dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/floating_action_bar_of_hours_record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_add_circle_24dp" />
+
+</android.support.constraint.ConstraintLayout>
