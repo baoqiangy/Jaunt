@@ -96,9 +96,12 @@ public class RegisterDriveActivity extends AppCompatActivity {
 
         if (requestCode == 167) {
             if(resultCode == Activity.RESULT_OK){
+                //Place selectedPlace = (Place) data.getParcelableExtra("place");
+                //Geocoder mGeocoder = new Geocoder(this, Locale.getDefault());
+                //Address selectedAddress = GeocoderUtils.getAddressByCoordinates(mGeocoder, selectedPlace.getLatLng());
                 Address selectedAddress = (Address) data.getParcelableExtra("place");
                 address1Input.setText(selectedAddress.getAddressLine(0));
-                cityStateInput.setText(selectedAddress.getSubLocality() + "/" + selectedAddress.getLocality());
+                cityStateInput.setText(selectedAddress.getLocality() + "/" + selectedAddress.getAdminArea());
                 String zipcode = selectedAddress.getPostalCode();
                 zipcodeInput.setText((zipcode!=null)?zipcode:"");
             }

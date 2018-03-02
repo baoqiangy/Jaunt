@@ -11,20 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.joda.time.DateTime;
+import com.google.android.gms.location.places.Place;
+
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Stream;
 
+import csc445.missouriwestern.edu.jaunt.Globals;
 import csc445.missouriwestern.edu.jaunt.R;
 import csc445.missouriwestern.edu.jaunt.extensions.adapters.CustomSectionedRecyclerViewAdapter;
 import csc445.missouriwestern.edu.jaunt.model.PlaceHistoryRecord;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
+import io.paperdb.Paper;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,8 +38,8 @@ public class PreplaceFragment extends Fragment {
     List<PlaceHistoryRecord> thisWeekRecords = new ArrayList<>();
     List<PlaceHistoryRecord> lastWeekRecords = new ArrayList<>();
     List<PlaceHistoryRecord> otherRecords    = new ArrayList<>();
-    ArrayList<Address> section1Addresses = new ArrayList<>();
-    ArrayList<Address> section2Addresses = new ArrayList<>();
+    ArrayList<Place> section1Addresses = new ArrayList<>();
+    ArrayList<Place> section2Addresses = new ArrayList<>();
     OnDataPass dataPasser;
     final CustomSectionedRecyclerViewAdapter sectionAdapter = new CustomSectionedRecyclerViewAdapter();
     CustomSectionedRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener;
@@ -118,7 +120,7 @@ public class PreplaceFragment extends Fragment {
         @Override
         public RecyclerView.ViewHolder getItemViewHolder(View view) {
             // return a custom instance of ViewHolder for the items of this section
-            return new PlaceItemViewHolder(view);
+            return new PlaceItemViewHolder(getActivity(), view);
         }
 
         @Override
@@ -143,64 +145,9 @@ public class PreplaceFragment extends Fragment {
 
     public void getSearchHistory(){
 
-        List<PlaceHistoryRecord> allRecords = new ArrayList<>();
+        List<PlaceHistoryRecord> allRecords;
+        allRecords = Paper.book().read(Globals.PLACE_HISTORY_KEY, new ArrayList<PlaceHistoryRecord>());
         // Add your Sections
-        Address addressHolder = new Address(Locale.US);
-        addressHolder.setAddressLine(0, "123 Some St.");
-        addressHolder.setSubLocality("Saint Joseph");
-        addressHolder.setLocality("Missouri");
-        addressHolder.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2017, 10, 2, 10, 35), addressHolder));
-
-        Address addressHolder2 = new Address(Locale.US);
-        addressHolder2.setAddressLine(0, "124 Some St.");
-        addressHolder2.setSubLocality("Saint Joseph");
-        addressHolder2.setLocality("Missouri");
-        addressHolder2.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2017, 10, 1, 10, 35), addressHolder2));
-
-        Address addressHolder3 = new Address(Locale.US);
-        addressHolder3.setAddressLine(0, "125 Some St.");
-        addressHolder3.setSubLocality("Saint Joseph");
-        addressHolder3.setLocality("Missouri");
-        addressHolder3.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2018, 2, 22, 10, 18), addressHolder3));
-
-        Address addressHolder4 = new Address(Locale.US);
-        addressHolder4.setAddressLine(0, "126 Some St.");
-        addressHolder4.setSubLocality("Saint Joseph");
-        addressHolder4.setLocality("Missouri");
-        addressHolder4.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2017, 10, 2, 9, 12), addressHolder4));
-
-        Address addressHolder5 = new Address(Locale.US);
-        addressHolder5.setAddressLine(0, "127 Some St.");
-        addressHolder5.setSubLocality("Saint Joseph");
-        addressHolder5.setLocality("Missouri");
-        addressHolder5.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2018, 2, 20, 10, 35), addressHolder5));
-
-        Address addressHolder6 = new Address(Locale.US);
-        addressHolder6.setAddressLine(0, "128 Some St.");
-        addressHolder6.setSubLocality("Saint Joseph");
-        addressHolder6.setLocality("Missouri");
-        addressHolder6.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2018, 2, 16, 15, 16), addressHolder6));
-
-        Address addressHolder7 = new Address(Locale.US);
-        addressHolder7.setAddressLine(0, "129 Some St.");
-        addressHolder7.setSubLocality("Saint Joseph");
-        addressHolder7.setLocality("Missouri");
-        addressHolder7.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2018, 1, 2, 6, 28), addressHolder7));
-
-        Address addressHolder8 = new Address(Locale.US);
-        addressHolder8.setAddressLine(0, "118 Some St.");
-        addressHolder8.setSubLocality("Saint Joseph");
-        addressHolder8.setLocality("Missouri");
-        addressHolder8.setPostalCode("64506");
-        allRecords.add(new PlaceHistoryRecord(new DateTime(2018, 1, 10, 8, 38), addressHolder8));
-
         thisWeekRecords = getThisWeekRecords(allRecords);
         lastWeekRecords = getLastWeekRecords(allRecords);
         otherRecords = getRecordsBeforeLastWeek(allRecords);

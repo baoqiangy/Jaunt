@@ -1,9 +1,13 @@
 package csc445.missouriwestern.edu.jaunt.fragments.preplace;
 
+import android.content.Context;
 import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 import csc445.missouriwestern.edu.jaunt.R;
 import csc445.missouriwestern.edu.jaunt.extensions.adapters.CustomSectionedRecyclerViewAdapter;
@@ -18,19 +22,35 @@ class PlaceItemViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public View rootView;
     public CustomSectionedRecyclerViewAdapter.RecyclerViewItemOnClickedListener clickListener;
     public Address address;
+    private Context context;
+    private Geocoder mGeocoder;
 
-    public PlaceItemViewHolder(View view) {
+    public PlaceItemViewHolder(Context context, View view) {
         super(view);
+        this.context = context;
         rootView = view;
         streetTextView = view.findViewById(R.id.street);
         cityStateTextView = view.findViewById(R.id.city_state);
+        mGeocoder = new Geocoder(context, Locale.getDefault());
     }
-
+//
+//    public PlaceItemViewHolder(View view) {
+//        super(view);
+//        rootView = view;
+//        streetTextView = view.findViewById(R.id.street);
+//        cityStateTextView = view.findViewById(R.id.city_state);
+//    }
+//
     void bindView(Address address, CustomSectionedRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener) {
         this.address = address;
         clickListener = listener;
-        streetTextView.setText(address.getAddressLine(0));
-        cityStateTextView.setText(address.getSubLocality() +", "+address.getLocality());
+
+        //LatLng latLng = address.getLatLng();
+        //Address androidAddress = GeocoderUtils.getAddressByCoordinates(mGeocoder, latLng);
+        if(address != null) {
+            streetTextView.setText(address.getAddressLine(0));
+            cityStateTextView.setText(address.getLocality() +", "+address.getAdminArea());
+        }
         rootView.setOnClickListener(this);
     }
 
