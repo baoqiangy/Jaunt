@@ -6,4 +6,5 @@ package csc445.missouriwestern.edu.jaunt;
 
 public class Globals {
     public static final String PLACE_HISTORY_KEY = "PlaceHistoryRecords";
+    public static final String ACCOUNT_INFO_KEY = "AccountInfo";
 }

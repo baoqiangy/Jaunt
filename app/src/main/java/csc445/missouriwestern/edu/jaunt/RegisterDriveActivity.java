@@ -2,17 +2,24 @@ package csc445.missouriwestern.edu.jaunt;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout;
+import csc445.missouriwestern.edu.jaunt.model.Driver;
+import io.paperdb.Paper;
 
 public class RegisterDriveActivity extends AppCompatActivity {
 
+    private EditText firstNameInput;
+    private EditText lastNameInput;
     private CustomTextInputLayout emailInputLayout;
     private EditText emailInput;
     private EditText birthdayInput;
@@ -20,16 +27,36 @@ public class RegisterDriveActivity extends AppCompatActivity {
     private EditText cityStateInput;
     private EditText zipcodeInput;
     private EditText driverLicenseInput;
+    private ConstraintLayout driverRegisterLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_drive);
+        driverRegisterLayout = findViewById(R.id.driver_register_layout);
         emailInputLayout = findViewById(R.id.email);
         emailInput = findViewById(R.id.email_input);
+        firstNameInput = findViewById(R.id.first_name_input);
+        lastNameInput = findViewById(R.id.last_name_input);
+        populateFieldsWithDriverInfoIfLoggedIn();
         setupBirthdayPicker();
         setupAddressPicker();
         setupDriverLicensePicker();
+        driverRegisterLayout.requestFocus();
+    }
+
+    private void populateFieldsWithDriverInfoIfLoggedIn() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(!prefs.getBoolean("signed_in", false)){
+            return;
+        }
+        Driver driver = Paper.book("driver_"+prefs.getString("email", null)).read(Globals.ACCOUNT_INFO_KEY);
+        if(driver == null){
+            return;
+        }
+        firstNameInput.setText(driver.getFirstName());
+        lastNameInput.setText(driver.getLastName());
+        emailInput.setText(driver.getEmail());
     }
 
     private void setupDriverLicensePicker() {
@@ -104,6 +131,7 @@ public class RegisterDriveActivity extends AppCompatActivity {
                 cityStateInput.setText(selectedAddress.getLocality() + "/" + selectedAddress.getAdminArea());
                 String zipcode = selectedAddress.getPostalCode();
                 zipcodeInput.setText((zipcode!=null)?zipcode:"");
+                driverRegisterLayout.requestFocus();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
