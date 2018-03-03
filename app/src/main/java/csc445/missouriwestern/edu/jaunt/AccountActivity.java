@@ -1,6 +1,8 @@
 package csc445.missouriwestern.edu.jaunt;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,18 +15,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.IpCons;
+import com.esafirm.imagepicker.model.Image;
+
+import java.util.List;
 
 import csc445.missouriwestern.edu.jaunt.fragments.AccountViewPagerAdapter;
 import csc445.missouriwestern.edu.jaunt.fragments.earnings.EarningsFragment;
 import csc445.missouriwestern.edu.jaunt.fragments.history.HistoryFragment;
 import csc445.missouriwestern.edu.jaunt.fragments.hours.HoursFragment;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imagepicker.ImagePickerWrapper;
 
 public class AccountActivity extends BaseActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private AccountViewPagerAdapter viewPagerAdapter;
+    private ImageView profileImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +43,8 @@ public class AccountActivity extends BaseActivity {
         setContentView(R.layout.activity_account);
         setupBackTitle();
         setupOptionsMenu();
-        findViewById(R.id.profile_imageview).setClipToOutline(true);
+        profileImageView = findViewById(R.id.profile_imageview);
+        profileImageView.setClipToOutline(true);
         populateFragments();
     }
 
@@ -106,6 +118,30 @@ public class AccountActivity extends BaseActivity {
 
     public void photo_clicked(View view) {
         Toast.makeText(AccountActivity.this, "Display UI for photo upload...", Toast.LENGTH_SHORT).show();
+        ImagePicker imagePicker = ImagePicker.create(this);
+        ImagePickerWrapper.pickImage(imagePicker);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == Activity.RESULT_OK){
+            if (ImagePicker.shouldHandle(IpCons.RC_IMAGE_PICKER, resultCode, data)) {
+                // Get a list of picked images
+                List<Image> images = ImagePicker.getImages(data);
+                // or get a single image only
+                Image image = ImagePicker.getFirstImageOrNull(data);
+                if(image != null)
+                    profileImageView.setImageBitmap(BitmapFactory.decodeFile(images.get(0).getPath()));
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+//        List<Image> images = ImagePicker.getImages(data);
+//        if (images != null && !images.isEmpty()) {
+//            profileImageView.setImageBitmap(BitmapFactory.decodeFile(images.get(0).getPath()));
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

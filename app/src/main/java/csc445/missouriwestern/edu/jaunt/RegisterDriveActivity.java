@@ -12,8 +12,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.IpCons;
+import com.esafirm.imagepicker.model.Image;
+
+import java.util.List;
+
 import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout;
 import csc445.missouriwestern.edu.jaunt.model.Driver;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imagepicker.ImagePickerWrapper;
 import io.paperdb.Paper;
 
 public class RegisterDriveActivity extends AppCompatActivity {
@@ -65,8 +72,8 @@ public class RegisterDriveActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
-                    Intent displayLicensePicker = new Intent(RegisterDriveActivity.this, ImageActivity.class);
-                    startActivityForResult(displayLicensePicker, 166);
+                    ImagePicker imagePicker = ImagePicker.create(RegisterDriveActivity.this);
+                    ImagePickerWrapper.pickImage(imagePicker);
                 }
             }
         });
@@ -111,21 +118,18 @@ public class RegisterDriveActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 166) {
-            if(resultCode == Activity.RESULT_OK){
-                String selectedPhotoPath = data.getParcelableExtra("photo");
-                driverLicenseInput.setText(selectedPhotoPath);
+        if(resultCode == Activity.RESULT_OK){
+            if (ImagePicker.shouldHandle(IpCons.RC_IMAGE_PICKER, resultCode, data)) {
+                // Get a list of picked images
+                List<Image> images = ImagePicker.getImages(data);
+                // or get a single image only
+                Image image = ImagePicker.getFirstImageOrNull(data);
+                if(image != null)
+                    driverLicenseInput.setText(images.get(0).getPath());
+                //update the image when save button is clicked
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
 
-        if (requestCode == 167) {
-            if(resultCode == Activity.RESULT_OK){
-                //Place selectedPlace = (Place) data.getParcelableExtra("place");
-                //Geocoder mGeocoder = new Geocoder(this, Locale.getDefault());
-                //Address selectedAddress = GeocoderUtils.getAddressByCoordinates(mGeocoder, selectedPlace.getLatLng());
+            if (requestCode == 167) {
                 Address selectedAddress = (Address) data.getParcelableExtra("place");
                 address1Input.setText(selectedAddress.getAddressLine(0));
                 cityStateInput.setText(selectedAddress.getLocality() + "/" + selectedAddress.getAdminArea());
@@ -133,23 +137,16 @@ public class RegisterDriveActivity extends AppCompatActivity {
                 zipcodeInput.setText((zipcode!=null)?zipcode:"");
                 driverRegisterLayout.requestFocus();
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-            //address1Input.requestFocus();
-            //birthdayInput.clearFocus();
-        }
 
-        if (requestCode == 168) {
-            if(resultCode == Activity.RESULT_OK){
+            if (requestCode == 168) {
                 String selectedDate = data.getStringExtra("date");
                 birthdayInput.setText(selectedDate);
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-            //address1Input.requestFocus();
-            //birthdayInput.clearFocus();
         }
+
+        if (resultCode == Activity.RESULT_CANCELED) {
+            //Write your code if there's no result
+        }
+
     }
 }

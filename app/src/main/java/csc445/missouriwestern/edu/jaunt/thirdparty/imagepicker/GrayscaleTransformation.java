@@ -1,5 +1,5 @@
 
-package com.esafirm.sample;
+package csc445.missouriwestern.edu.jaunt.thirdparty.imagepicker;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
