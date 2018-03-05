@@ -159,14 +159,14 @@ public class AccountActivity extends BaseActivity {
                 return true;
             case R.id.account_profile:
                 Toast.makeText(AccountActivity.this, "Display UI for profile...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AccountActivity.this, ProfileActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.account_settings:
                 Toast.makeText(AccountActivity.this, "Display UI for settings...", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.driver_register:
                 Toast.makeText(AccountActivity.this, "Display UI for driver registration...", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AccountActivity.this, RegisterDriveActivity.class);
-                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

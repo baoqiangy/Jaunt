@@ -37,7 +37,7 @@ import csc445.missouriwestern.edu.jaunt.utils.date.DateWrapper;
 import csc445.missouriwestern.edu.jaunt.utils.places.AddressUtils;
 import io.paperdb.Paper;
 
-public class RegisterDriveActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     private CustomTextInputLayout firstNameInputLayout;
     private CustomTextInputLayout lastNameInputLayout;
@@ -79,7 +79,7 @@ public class RegisterDriveActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_drive);
+        setContentView(R.layout.activity_profile);
         wireUpInputs();
         setupBirthdayPicker();
         setupAddressPicker();
@@ -145,7 +145,7 @@ public class RegisterDriveActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
-                    ImagePicker imagePicker = ImagePicker.create(RegisterDriveActivity.this);
+                    ImagePicker imagePicker = ImagePicker.create(ProfileActivity.this);
                     ImagePickerWrapper.pickImage(imagePicker);
                 }
             }
@@ -161,7 +161,7 @@ public class RegisterDriveActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
-                    Intent displayPlacePicker = new Intent(RegisterDriveActivity.this, PlaceActivity.class);
+                    Intent displayPlacePicker = new Intent(ProfileActivity.this, PlaceActivity.class);
                     startActivityForResult(displayPlacePicker, 167);
                 }
             }
@@ -174,7 +174,7 @@ public class RegisterDriveActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
-                    Intent displayCalendar = new Intent(RegisterDriveActivity.this, CalendarActivity.class);
+                    Intent displayCalendar = new Intent(ProfileActivity.this, CalendarActivity.class);
                     startActivityForResult(displayCalendar, 168);
                 }
             }
@@ -343,18 +343,18 @@ public class RegisterDriveActivity extends AppCompatActivity {
 
                         String book_name = "driver_"+email;
                         Paper.book(book_name).write(Globals.ACCOUNT_INFO_KEY, driver);
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RegisterDriveActivity.this);
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
                         prefs.edit().putString("email", email).commit();
-                        Toast.makeText(RegisterDriveActivity.this, "Update Successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Update Successful!", Toast.LENGTH_SHORT).show();
                         finish();
                     }else{
                         Log.d(TAG, response.getString("error_message"));
-                        Toast.makeText(RegisterDriveActivity.this, response.getString("error_message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, response.getString("error_message"), Toast.LENGTH_SHORT).show();
                     }
                 }
                 catch (Exception e){
                     e.printStackTrace();
-                    Toast.makeText(RegisterDriveActivity.this, "Exception occurred." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Exception occurred." + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -366,7 +366,7 @@ public class RegisterDriveActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 //progressTxtView.setText("Processing ... Error!");
                 Log.d(TAG, error.getMessage());
-                Toast.makeText(RegisterDriveActivity.this, "Error response from server - " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Error response from server - " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         };
     }
