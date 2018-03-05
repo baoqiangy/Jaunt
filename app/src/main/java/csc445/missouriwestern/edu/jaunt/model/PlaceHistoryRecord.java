@@ -14,12 +14,14 @@ import java.time.LocalDate;
 public class PlaceHistoryRecord {
     private DateTime lastSearchTime;
     private Address address;
+    private String gms_id;
 
     public PlaceHistoryRecord() {
     }
 
-    public PlaceHistoryRecord(DateTime lastSearchTime, Address address) {
+    public PlaceHistoryRecord(DateTime lastSearchTime, String gms_id, Address address) {
         this.lastSearchTime = lastSearchTime;
+        this.gms_id = gms_id;
         this.address = address;
     }
 
@@ -43,5 +45,13 @@ public class PlaceHistoryRecord {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getGms_id() {
+        return gms_id;
+    }
+
+    public void setGms_id(String gms_id) {
+        this.gms_id = gms_id;
     }
 }

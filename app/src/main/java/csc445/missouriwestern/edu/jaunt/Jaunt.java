@@ -1,6 +1,7 @@
 package csc445.missouriwestern.edu.jaunt;
 
 import android.app.Application;
+import android.content.Context;
 
 import io.paperdb.Paper;
 
@@ -9,9 +10,15 @@ import io.paperdb.Paper;
  */
 
 public class Jaunt extends Application {
-    @Override
+    private static Context context;
+
     public void onCreate() {
         super.onCreate();
+        Jaunt.context = getApplicationContext();
         Paper.init(getApplicationContext());
+    }
+
+    public static Context getAppContext() {
+        return Jaunt.context;
     }
 }

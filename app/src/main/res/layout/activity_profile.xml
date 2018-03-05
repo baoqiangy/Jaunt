@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="csc445.missouriwestern.edu.jaunt.RegisterDriveActivity">
+    tools:context="csc445.missouriwestern.edu.jaunt.ProfileActivity">
 
     <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomCondensedTextView
         android:id="@+id/customCondensedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/register_to_drive"
+        android:text="@string/profile_activity_title"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
-            <include layout="@layout/fragment_driver_registration" />
+            <include layout="@layout/fragment_profile" />
         </ScrollView>
     </LinearLayout>
 

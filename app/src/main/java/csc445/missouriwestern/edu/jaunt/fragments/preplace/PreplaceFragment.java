@@ -60,7 +60,8 @@ public class PreplaceFragment extends Fragment {
             @Override
             public void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder) {
                 Address selectedAddress = ((PlaceItemViewHolder)viewHolder).address;
-                dataPasser.onDataPass(selectedAddress);
+                String gms_id = ((PlaceItemViewHolder)viewHolder).gms_id;
+                dataPasser.onDataPass(gms_id, selectedAddress);
             }
         };
 
@@ -212,6 +213,6 @@ public class PreplaceFragment extends Fragment {
     }
 
     public interface OnDataPass {
-        public void onDataPass(Address data);
+        public void onDataPass(String gms_id, Address data);
     }
 }
