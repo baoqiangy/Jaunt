@@ -20,98 +20,208 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintVertical_bias="0.100000024" />
 
-    <EditText
-        android:id="@+id/first_name"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/first_name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/last_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top_guideline" />
+    <!--<EditText-->
+    <!--android:id="@+id/first_name"-->
+    <!--android:layout_width="320dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:ems="10"-->
+    <!--android:hint="@string/first_name"-->
+    <!--android:inputType="textPersonName"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/last_name"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.5"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/top_guideline" />-->
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/password1"
-        app:layout_constraintEnd_toEndOf="@+id/last_name"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/last_name"
-        app:layout_constraintTop_toBottomOf="@+id/last_name" />
+    <!--<EditText-->
+    <!--android:id="@+id/email"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:ems="10"-->
+    <!--android:hint="@string/email"-->
+    <!--android:inputType="textEmailAddress"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/password1"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/last_name"-->
+    <!--app:layout_constraintHorizontal_bias="0.5"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/last_name"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/last_name" />-->
 
-    <EditText
-        android:id="@+id/password1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/password2"
-        app:layout_constraintEnd_toEndOf="@+id/email"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+    <!--<EditText-->
+    <!--android:id="@+id/password1"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:ems="10"-->
+    <!--android:hint="@string/password"-->
+    <!--android:inputType="textPassword"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/password2"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/email"-->
+    <!--app:layout_constraintHorizontal_bias="0.5"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/email"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/email" />-->
 
-    <EditText
-        android:id="@+id/password2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="@string/confirm_password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
-        app:layout_constraintEnd_toEndOf="@+id/password1"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/password1"
-        app:layout_constraintTop_toBottomOf="@+id/password1" />
+    <!--<EditText-->
+    <!--android:id="@+id/password2"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:ems="10"-->
+    <!--android:hint="@string/confirm_password"-->
+    <!--android:inputType="textPassword"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/password1"-->
+    <!--app:layout_constraintHorizontal_bias="0.5"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/password1"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/password1" />-->
 
-    <Button
-        android:id="@+id/singup_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="67dp"
-        android:background="@drawable/bg_submit_btn"
-        android:text="@string/sign_up"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="signUpButtonClicked"/>
-
-    <EditText
-        android:id="@+id/last_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/last_name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintEnd_toEndOf="@+id/first_name"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/first_name"
-        app:layout_constraintTop_toBottomOf="@+id/first_name" />
+    <!--<EditText-->
+    <!--android:id="@+id/last_name"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:ems="10"-->
+    <!--android:hint="@string/last_name"-->
+    <!--android:inputType="textPersonName"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/email"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/first_name"-->
+    <!--app:layout_constraintHorizontal_bias="0.5"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/first_name"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/first_name" />-->
 
     <android.support.constraint.Guideline
         android:id="@+id/top_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="198dp" />
+        app:layout_constraintGuide_begin="113dp" />
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/first_name_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@+id/last_name_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_guideline"
+        app:layout_constraintVertical_chainStyle="spread">
+
+        <EditText
+            android:id="@+id/first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/first_name"
+            android:inputType="textPersonName" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/last_name_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@+id/email_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_name_layout">
+
+        <EditText
+            android:id="@+id/last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/last_name"
+            android:inputType="textPersonName" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/email_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@+id/password1_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/last_name_layout">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/password1_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@+id/password2_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_layout">
+
+        <EditText
+            android:id="@+id/password1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
+
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout
+        android:id="@+id/password2_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password1_layout">
+
+        <EditText
+            android:id="@+id/password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword" />
+
+    </csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/bottom_guideline"
@@ -119,4 +229,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="601dp" />
+    <Button
+    android:id="@+id/singup_button"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="32dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/bg_submit_btn"
+    android:onClick="signUpButtonClicked"
+    android:text="@string/sign_up"
+    android:textAlignment="center"
+    android:textAllCaps="false"
+    android:textColor="@android:color/white"
+    android:textSize="18sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/bottom_guideline" />
 </android.support.constraint.ConstraintLayout>

@@ -22,6 +22,8 @@ class PlaceItemViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public View rootView;
     public CustomSectionedRecyclerViewAdapter.RecyclerViewItemOnClickedListener clickListener;
     public Address address;
+    public String gms_id;
+
     private Context context;
     private Geocoder mGeocoder;
 

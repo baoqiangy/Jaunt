@@ -157,7 +157,7 @@ public class PlaceActivity extends AppCompatActivity implements PreplaceFragment
     }
 
     @Override
-    public void onDataPass(Address data) {
+    public void onDataPass(String gms_id, Address data) {
         //Address selectedAddress = GeocoderUtils.getAddressByCoordinates(mGeocoder, data.getLatLng());
 
         //Log.d("Google Place - ", data.toString());
@@ -165,6 +165,7 @@ public class PlaceActivity extends AppCompatActivity implements PreplaceFragment
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("place", data);
+        returnIntent.putExtra("gms_id", gms_id);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
@@ -188,7 +189,7 @@ public class PlaceActivity extends AppCompatActivity implements PreplaceFragment
                         if (places.getStatus().isSuccess()) {
                             final Place selectedPlace = places.get(0);
                             updatePlaceHistory(selectedPlace);
-                            onDataPass(GeocoderUtils.getAddressByCoordinates(mGeocoder, selectedPlace.getLatLng()));
+                            onDataPass(selectedPlace.getId(), GeocoderUtils.getAddressByCoordinates(mGeocoder, selectedPlace.getLatLng()));
                         }
                         places.release();
                     }
@@ -204,7 +205,7 @@ public class PlaceActivity extends AppCompatActivity implements PreplaceFragment
             DateTime currentTime = new DateTime(DateTimeZone.getDefault());
             if(currentRecords == null) {
                 currentRecords = new ArrayList<>();
-                currentRecords.add(new PlaceHistoryRecord(currentTime, GeocoderUtils.getAddressByCoordinates(mGeocoder, queriedLocation)));
+                currentRecords.add(new PlaceHistoryRecord(currentTime, place.getId(), GeocoderUtils.getAddressByCoordinates(mGeocoder, queriedLocation)));
             }else{
                 boolean found = false;
                 for (PlaceHistoryRecord element : currentRecords) {
@@ -215,7 +216,7 @@ public class PlaceActivity extends AppCompatActivity implements PreplaceFragment
                     }
                 }
                 if(!found){
-                    currentRecords.add(new PlaceHistoryRecord(currentTime, GeocoderUtils.getAddressByCoordinates(mGeocoder, queriedLocation)));
+                    currentRecords.add(new PlaceHistoryRecord(currentTime, place.getId(), GeocoderUtils.getAddressByCoordinates(mGeocoder, queriedLocation)));
                 }
             }
 
