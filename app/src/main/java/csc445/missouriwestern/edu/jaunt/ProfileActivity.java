@@ -132,7 +132,11 @@ public class ProfileActivity extends AppCompatActivity {
         Address address = driver.getAddress();
         if(address != null) {
             address1Input.setText(address.getAddressLine(0));
-            cityStateInput.setText(address.getLocality() + "/" + AddressUtils.toStateCode(address.getAdminArea()));
+            String state = address.getAdminArea();
+            if(state.length() > 2) {
+                state = AddressUtils.toStateCode(state);
+            }
+            cityStateInput.setText(address.getLocality() + "/" + state);
             String zipcode = address.getPostalCode();
             zipcodeInput.setText((zipcode!=null)?zipcode:"");
         }

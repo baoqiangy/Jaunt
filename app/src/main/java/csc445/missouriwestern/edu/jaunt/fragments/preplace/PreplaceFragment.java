@@ -127,9 +127,10 @@ public class PreplaceFragment extends Fragment {
         @Override
         public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
             Address address = itemList.get(position).getAddress();
+            String gms_id = itemList.get(position).getGms_id();
             // bind your view here
             // code moved to the holder class itself with a listener for click event
-            ((PlaceItemViewHolder) holder).bindView(address, listener);
+            ((PlaceItemViewHolder) holder).bindView(gms_id, address, listener);
         }
 
         @Override

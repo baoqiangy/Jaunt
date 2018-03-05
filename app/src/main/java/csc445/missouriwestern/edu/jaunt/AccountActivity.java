@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.location.Address;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
@@ -26,11 +27,14 @@ import com.esafirm.imagepicker.model.Image;
 
 import java.util.List;
 
+import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextView;
 import csc445.missouriwestern.edu.jaunt.fragments.AccountViewPagerAdapter;
 import csc445.missouriwestern.edu.jaunt.fragments.earnings.EarningsFragment;
 import csc445.missouriwestern.edu.jaunt.fragments.history.HistoryFragment;
 import csc445.missouriwestern.edu.jaunt.fragments.hours.HoursFragment;
+import csc445.missouriwestern.edu.jaunt.model.Driver;
 import csc445.missouriwestern.edu.jaunt.thirdparty.imagepicker.ImagePickerWrapper;
+import io.paperdb.Paper;
 
 public class AccountActivity extends BaseActivity {
 
@@ -38,6 +42,9 @@ public class AccountActivity extends BaseActivity {
     private ViewPager viewPager;
     private AccountViewPagerAdapter viewPagerAdapter;
     private ImageView profileImageView;
+    private CustomTextView profileNameTextView;
+    private CustomTextView profileLocationTextView;
+    private Driver me;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +54,30 @@ public class AccountActivity extends BaseActivity {
         setupOptionsMenu();
         profileImageView = findViewById(R.id.profile_imageview);
         profileImageView.setClipToOutline(true);
+        profileNameTextView = findViewById(R.id.profile_name);
+        profileLocationTextView = findViewById(R.id.profile_location);
         populateFragments();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean signed_in = prefs.getBoolean("signed_in", false);
+        if(signed_in){
+            String email = prefs.getString("email", null);
+            String book_name = "driver_"+email;
+            me = Paper.book(book_name).read(Globals.ACCOUNT_INFO_KEY);
+            if(me != null){
+                profileNameTextView.setText(me.getFirstName() +" " + me.getLastName());
+                Address myaddress = me.getAddress();
+                if(myaddress != null){
+                    profileLocationTextView.setText(myaddress.getLocality() +", "+myaddress.getAdminArea());
+                }else{
+                    profileLocationTextView.setText("");
+                }
+            }
+        }
     }
 
     private void setupOptionsMenu() {

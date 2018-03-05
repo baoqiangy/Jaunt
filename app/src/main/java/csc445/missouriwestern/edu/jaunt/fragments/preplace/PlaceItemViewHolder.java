@@ -43,7 +43,8 @@ class PlaceItemViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 //        cityStateTextView = view.findViewById(R.id.city_state);
 //    }
 //
-    void bindView(Address address, CustomSectionedRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener) {
+    void bindView(String gms_id, Address address, CustomSectionedRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener) {
+        this.gms_id = gms_id;
         this.address = address;
         clickListener = listener;
 
