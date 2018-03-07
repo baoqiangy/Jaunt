@@ -45,13 +45,14 @@ public class AccountActivity extends BaseActivity {
     private CustomTextView profileNameTextView;
     private CustomTextView profileLocationTextView;
     private Driver me;
+    private MenuItem actMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        setupBackTitle();
         setupOptionsMenu();
+        setupBackTitle();
         profileImageView = findViewById(R.id.profile_imageview);
         profileImageView.setClipToOutline(true);
         profileNameTextView = findViewById(R.id.profile_name);
@@ -88,6 +89,7 @@ public class AccountActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.account_options_menu, menu);
+        actMore = menu.getItem(0);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -114,13 +116,19 @@ public class AccountActivity extends BaseActivity {
                 if (scrollRange == -1) {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
-                collapsingToolbarLayout.setCollapsedTitleGravity(Gravity.CENTER);
                 if (scrollRange + verticalOffset == 0) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                    collapsingToolbarLayout.setTitle("My Account");
+                    collapsingToolbarLayout.setCollapsedTitleGravity(Gravity.CENTER);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    if(actMore != null) {
+                        actMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                    }
+                    collapsingToolbarLayout.setTitle("Account");
                     isShow = true;
                 } else if(isShow) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    if(actMore != null) {
+                        actMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    }
                     collapsingToolbarLayout.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
                     isShow = false;
                 }
@@ -188,15 +196,15 @@ public class AccountActivity extends BaseActivity {
                 finish();
                 return true;
             case R.id.account_profile:
-                Toast.makeText(AccountActivity.this, "Display UI for profile...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AccountActivity.this, "Display UI for profile...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AccountActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.account_settings:
-                Toast.makeText(AccountActivity.this, "Display UI for settings...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AccountActivity.this, "Display UI for settings...", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.driver_register:
-                Toast.makeText(AccountActivity.this, "Display UI for driver registration...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AccountActivity.this, "Display UI for driver registration...", Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -204,7 +212,7 @@ public class AccountActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "onBackPressed called", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onBackPressed called", Toast.LENGTH_SHORT).show();
         super.onBackPressed();
     }
 }

@@ -51,7 +51,7 @@ class PlaceItemViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         //LatLng latLng = address.getLatLng();
         //Address androidAddress = GeocoderUtils.getAddressByCoordinates(mGeocoder, latLng);
         if(address != null) {
-            streetTextView.setText(address.getAddressLine(0));
+            streetTextView.setText(address.getAddressLine(0).split(",")[0]);
             cityStateTextView.setText(address.getLocality() +", "+address.getAdminArea());
         }
         rootView.setOnClickListener(this);

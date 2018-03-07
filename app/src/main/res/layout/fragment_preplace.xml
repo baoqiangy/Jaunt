@@ -15,8 +15,8 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/place_recyclerview"
-            android:layout_width="395dp"
-            android:layout_height="678dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

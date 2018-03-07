@@ -96,9 +96,12 @@ public class SignupActivity extends AppCompatActivity {
         firstName = firstNameEditText.getText().toString().trim();
         boolean validFirstName  = firstName.length() > 0;
         if(!validFirstName) {firstNameEditTextLayout.setError("First name is required");}
+        else{firstNameEditTextLayout.setError(null);}
+
         lastName = lastNameEditText.getText().toString().trim();
         boolean validLastName   = lastName.length() > 0;
         if(!validLastName) {lastNameEditTextLayout.setError("Last name is required");}
+        else{lastNameEditTextLayout.setError(null);}
 
         email = emailEditText.getText().toString().trim();
         boolean validEmail      = validateEmail(email);
@@ -115,6 +118,7 @@ public class SignupActivity extends AppCompatActivity {
             password2EditTextLayout.setError("Passwords do not match");
         }else{
             password = password1;
+            password2EditTextLayout.setError(null);
         }
         return matched;
     }
@@ -122,6 +126,7 @@ public class SignupActivity extends AppCompatActivity {
     private boolean validateEmail(String email) {
         EmailValidationResult.ValidationError error = EmailValidator.validateSyntax(email);
         if(error == null) {
+            emailEditTextLayout.setError(null);
             return true;
         }
         switch (error){

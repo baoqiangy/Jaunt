@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             this.password = passwordInput;
         }
+        passwordEditTextLayout.setError(null);
         return true;
     }
 
@@ -118,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         EmailValidationResult.ValidationError error = EmailValidator.validateSyntax(email);
         if(error == null) {
             this.email = email;
+            emailEditTextLayout.setError(null);
             return true;
         }
         switch (error){

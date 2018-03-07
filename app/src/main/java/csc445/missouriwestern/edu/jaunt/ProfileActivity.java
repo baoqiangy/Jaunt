@@ -130,8 +130,10 @@ public class ProfileActivity extends AppCompatActivity {
         birthdayInput.setText(driver.getBirthday() != null ? DateWrapper.dateToString(driver.getBirthday()) : "");
 
         Address address = driver.getAddress();
+        gms_id = driver.getGms_id();
         if(address != null) {
-            address1Input.setText(address.getAddressLine(0));
+            //address.getAddressLine(0) may return the full address, for example, on API 24
+            address1Input.setText(address.getAddressLine(0).split(",")[0]);
             String state = address.getAdminArea();
             if(state.length() > 2) {
                 state = AddressUtils.toStateCode(state);
@@ -189,10 +191,12 @@ public class ProfileActivity extends AppCompatActivity {
         firstName = firstNameInput.getText().toString().trim();
         boolean validFirstName  = firstName.length() > 0;
         if(!validFirstName) {firstNameInputLayout.setError("First name is required");}
+        else{firstNameInputLayout.setError(null);}
 
         lastName = lastNameInput.getText().toString().trim();
         boolean validLastName   = lastName.length() > 0;
         if(!validLastName) {lastNameInputLayout.setError("Last name is required");}
+        else{lastNameInputLayout.setError(null);}
 
         email = emailInput.getText().toString().trim();
         boolean validEmail      = validateEmail(email);
@@ -206,6 +210,7 @@ public class ProfileActivity extends AppCompatActivity {
     private boolean validateEmail(String email) {
         EmailValidationResult.ValidationError error = EmailValidator.validateSyntax(email);
         if(error == null) {
+            emailInputLayout.setError(null);
             return true;
         }
         switch (error){
@@ -256,7 +261,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (requestCode == 167) {
                 selectedAddress = (Address) data.getParcelableExtra("place");
                 gms_id = data.getStringExtra("gms_id");
-                address1Input.setText(selectedAddress.getAddressLine(0));
+                address1Input.setText(selectedAddress.getAddressLine(0).split(",")[0]);
                 cityStateInput.setText(selectedAddress.getLocality() + "/" + AddressUtils.toStateCode(selectedAddress.getAdminArea()));
                 String zipcode = selectedAddress.getPostalCode();
                 zipcodeInput.setText((zipcode!=null)?zipcode:"");
@@ -343,7 +348,9 @@ public class ProfileActivity extends AppCompatActivity {
                             driver.setAddressId(new_address_id);
                         }
                         driver.setGms_id(gms_id);
-                        driver.setAddress(selectedAddress);
+                        if(selectedAddress != null){
+                            driver.setAddress(selectedAddress);
+                        }
 
                         String book_name = "driver_"+email;
                         Paper.book(book_name).write(Globals.ACCOUNT_INFO_KEY, driver);
