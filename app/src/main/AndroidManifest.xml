@@ -56,7 +56,7 @@
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".OrderActivity" />
         <activity android:name=".RestaurantsActivity" android:parentActivityName=".AccountActivity"/>
-        <activity android:name=".RestaurantActivity"></activity>
+        <activity android:name=".RestaurantActivity" android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

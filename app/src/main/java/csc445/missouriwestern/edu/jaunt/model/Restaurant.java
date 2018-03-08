@@ -48,14 +48,14 @@ public class Restaurant implements Parcelable{
     }
 
     protected Restaurant(Parcel in) {
-        rid = in.readInt();
-        name = in.readString();
-        telephone = in.readString();
-        logo = in.readString();
-        gms_id = in.readString();
-        latLng = in.readParcelable(LatLng.class.getClassLoader());
-        address = in.readParcelable(Address.class.getClassLoader());
-        TAG = in.readString();
+        rid = (Integer) in.readSerializable();
+        name = (String) in.readSerializable();
+        telephone = (String) in.readSerializable();
+        logo = (String) in.readSerializable();
+        gms_id = (String) in.readSerializable();
+        latLng = (LatLng) in.readParcelable(LatLng.class.getClassLoader());
+        address = (Address) in.readParcelable(Address.class.getClassLoader());
+        menu = (RestaurantMenu) in.readParcelable(RestaurantMenu.class.getClassLoader());
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -141,13 +141,13 @@ public class Restaurant implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.rid);
-        dest.writeString(this.name);
-        dest.writeValue(this.telephone);
-        dest.writeString(this.logo);
-        dest.writeString(this.gms_id);
-        dest.writeValue(this.latLng);
-        dest.writeValue(this.address);
-        dest.writeValue(this.menu);
+        dest.writeSerializable(new Integer(this.rid));
+        dest.writeSerializable(this.name);
+        dest.writeSerializable(this.telephone);
+        dest.writeSerializable(this.logo);
+        dest.writeSerializable(this.gms_id);
+        dest.writeParcelable(this.latLng, flags);
+        dest.writeParcelable(this.address, flags);
+        dest.writeParcelable(this.menu, flags);
     }
 }
