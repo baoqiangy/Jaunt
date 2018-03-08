@@ -1,4 +1,4 @@
-package com.sketchproject.infogue.modules;
+package csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader;
 
 import android.content.Context;
 import android.graphics.Bitmap;

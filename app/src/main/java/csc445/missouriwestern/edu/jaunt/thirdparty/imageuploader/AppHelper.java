@@ -1,6 +1,12 @@
+package csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader;
+
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -34,6 +40,17 @@ public class AppHelper {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    // convert from bitmap to byte array
+    public static byte[] getBytesFromImagePath(Context context, String path) {
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        if(bitmap == null) {
+            return null;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 }

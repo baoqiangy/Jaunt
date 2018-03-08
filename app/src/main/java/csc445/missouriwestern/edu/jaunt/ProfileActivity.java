@@ -13,9 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -28,11 +31,16 @@ import com.spothero.emailvalidator.EmailValidator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout;
 import csc445.missouriwestern.edu.jaunt.model.Driver;
 import csc445.missouriwestern.edu.jaunt.thirdparty.imagepicker.ImagePickerWrapper;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.AppHelper;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleyMultipartRequest;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleySingleton;
 import csc445.missouriwestern.edu.jaunt.utils.date.DateWrapper;
 import csc445.missouriwestern.edu.jaunt.utils.places.AddressUtils;
 import io.paperdb.Paper;
@@ -69,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String city;
     private String state;
     private String zipcode;
+    private String selectedLicensePath;
 
     private Driver driver;
     private Address selectedAddress;
@@ -253,9 +262,11 @@ public class ProfileActivity extends AppCompatActivity {
                 List<Image> images = ImagePicker.getImages(data);
                 // or get a single image only
                 Image image = ImagePicker.getFirstImageOrNull(data);
-                if(image != null)
-                    driverLicenseInput.setText(images.get(0).getPath());
-                //update the image when save button is clicked
+                if(image != null) {
+                    selectedLicensePath = image.getPath();
+                    driverLicenseInput.setText(selectedLicensePath);
+                    //update the image when save button is clicked
+                }
             }
 
             if (requestCode == 167) {
@@ -322,9 +333,106 @@ public class ProfileActivity extends AppCompatActivity {
 
             //progressTxtView.setText("Processing ...");
             requestQueue.add(jsonObjectRequest);
+            uploadLicenseIfDifferent();
         }catch (JSONException e){
             e.printStackTrace();
         }
+    }
+
+    private void uploadLicenseIfDifferent() {
+        if(selectedLicensePath == null || selectedLicensePath.trim().length() == 0) {
+            return;
+        }
+        String url = Globals.SERVER_URL + "/upload_image.php";
+
+        VolleyMultipartRequest uploadRequest = new VolleyMultipartRequest(Request.Method.POST, url, createListener_uploadLicense(), createErrorListener_updateLicense()){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("driver_id", String.valueOf(driver.getDriverId()));
+                params.put("purpose", "license");
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                // file name could found file base or direct access from real path
+                // for now just get bitmap data from ImageView
+                params.put("license", new DataPart("license_"+driver.getDriverId()+".jpg", AppHelper.getBytesFromImagePath(getBaseContext(), selectedLicensePath), "image/jpeg"));
+                //params.put("cover", new DataPart("file_cover.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), mCoverImage.getDrawable()), "image/jpeg"));
+
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(uploadRequest);
+        driver.setHasLicensePhoto(true);
+        Paper.book("driver_" + driver.getEmail()).write(Globals.ACCOUNT_INFO_KEY, driver);
+    }
+
+    private Response.ErrorListener createErrorListener_updateLicense() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                String errorMessage = "Unknown error";
+                if (networkResponse == null) {
+                    if (error.getClass().equals(TimeoutError.class)) {
+                        errorMessage = "Request timeout";
+                    } else if (error.getClass().equals(NoConnectionError.class)) {
+                        errorMessage = "Failed to connect server";
+                    }
+                } else {
+                    String result = new String(networkResponse.data);
+                    try {
+                        JSONObject response = new JSONObject(result);
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+
+                        Log.e("Error Status", status);
+                        Log.e("Error Message", message);
+
+                        if (networkResponse.statusCode == 404) {
+                            errorMessage = "Resource not found";
+                        } else if (networkResponse.statusCode == 401) {
+                            errorMessage = message+" Please login again";
+                        } else if (networkResponse.statusCode == 400) {
+                            errorMessage = message+ " Check your inputs";
+                        } else if (networkResponse.statusCode == 500) {
+                            errorMessage = message+" Something is getting wrong";
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.i("Error", errorMessage);
+                Toast.makeText(ProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        };
+    }
+
+    private Response.Listener<NetworkResponse> createListener_uploadLicense() {
+        return new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                String resultResponse = new String(response.data);
+                try {
+                    JSONObject result = new JSONObject(resultResponse);
+                    int status = result.getInt("success");
+                    String errorMessage = result.getString("error_message");
+
+                    if (status == 1) {
+                        // tell everybody you have succed upload image and post strings
+                        Toast.makeText(ProfileActivity.this, "License photo uploaded successfully.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     private Response.Listener<JSONObject> createListener_updateDriver(){

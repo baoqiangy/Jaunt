@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,11 +22,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.IpCons;
 import com.esafirm.imagepicker.model.Image;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextView;
 import csc445.missouriwestern.edu.jaunt.fragments.AccountViewPagerAdapter;
@@ -34,6 +49,9 @@ import csc445.missouriwestern.edu.jaunt.fragments.history.HistoryFragment;
 import csc445.missouriwestern.edu.jaunt.fragments.hours.HoursFragment;
 import csc445.missouriwestern.edu.jaunt.model.Driver;
 import csc445.missouriwestern.edu.jaunt.thirdparty.imagepicker.ImagePickerWrapper;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.AppHelper;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleyMultipartRequest;
+import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleySingleton;
 import io.paperdb.Paper;
 
 public class AccountActivity extends BaseActivity {
@@ -46,6 +64,9 @@ public class AccountActivity extends BaseActivity {
     private CustomTextView profileLocationTextView;
     private Driver me;
     private MenuItem actMore;
+    private String selectedProfilePhotoPath;
+    private RequestOptions signatureOptions;
+    private boolean uploadingProfilePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +97,20 @@ public class AccountActivity extends BaseActivity {
                     profileLocationTextView.setText(myaddress.getLocality() +", "+myaddress.getAdminArea());
                 }else{
                     profileLocationTextView.setText("");
+                }
+
+                if(uploadingProfilePhoto){
+                    return;
+                }
+                if(me.isHasProfilePhoto()){
+                    String image_url = Globals.SERVER_URL + "/images/driver/profile_" + me.getDriverId() + ".jpg";
+                    if(signatureOptions == null){
+                        signatureOptions = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+                    }
+                    Glide.with(this).
+                            load(image_url).
+                            apply(signatureOptions).
+                            into(profileImageView);
                 }
             }
         }
@@ -171,8 +206,12 @@ public class AccountActivity extends BaseActivity {
                 List<Image> images = ImagePicker.getImages(data);
                 // or get a single image only
                 Image image = ImagePicker.getFirstImageOrNull(data);
-                if(image != null)
-                    profileImageView.setImageBitmap(BitmapFactory.decodeFile(images.get(0).getPath()));
+                selectedProfilePhotoPath = image.getPath();
+                if(image != null) {
+                    profileImageView.setImageBitmap(BitmapFactory.decodeFile(selectedProfilePhotoPath));
+                    uploadingProfilePhoto = true;
+                    uploadProfilePhotoIfDifferent();
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -215,4 +254,116 @@ public class AccountActivity extends BaseActivity {
         //Toast.makeText(this, "onBackPressed called", Toast.LENGTH_SHORT).show();
         super.onBackPressed();
     }
+
+    private void uploadProfilePhotoIfDifferent() {
+        if(selectedProfilePhotoPath == null || selectedProfilePhotoPath.trim().length() == 0) {
+            return;
+        }
+        String url = Globals.SERVER_URL + "/upload_image.php";
+
+        VolleyMultipartRequest uploadRequest = new VolleyMultipartRequest(Request.Method.POST,
+                url, createListener_uploadProfilePhoto(), createErrorListener_updateProfilePhoto()){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("driver_id", String.valueOf(me.getDriverId()));
+                params.put("purpose", "profile");
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                // file name could found file base or direct access from real path
+                // for now just get bitmap data from ImageView
+                params.put("profile", new DataPart("profile_"+me.getDriverId()+".jpg",
+                        AppHelper.getBytesFromImagePath(getBaseContext(), selectedProfilePhotoPath), "image/jpeg"));
+                //params.put("cover", new DataPart("file_cover.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), mCoverImage.getDrawable()), "image/jpeg"));
+
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(uploadRequest);
+    }
+
+    private void updateProfilePhotoWhenUploadSucceeded(){
+        me.setHasProfilePhoto(true);
+        Paper.book("driver_" + me.getEmail()).write(Globals.ACCOUNT_INFO_KEY, me);
+
+        String image_url = Globals.SERVER_URL + "/images/driver/profile_" + me.getDriverId() + ".jpg";
+        signatureOptions = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+        Glide.with(this).
+                load(image_url).
+                apply(signatureOptions);
+                //into(profileImageView);
+    }
+
+    private Response.ErrorListener createErrorListener_updateProfilePhoto() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                uploadingProfilePhoto = false;
+                NetworkResponse networkResponse = error.networkResponse;
+                String errorMessage = "Unknown error";
+                if (networkResponse == null) {
+                    if (error.getClass().equals(TimeoutError.class)) {
+                        errorMessage = "Request timeout";
+                    } else if (error.getClass().equals(NoConnectionError.class)) {
+                        errorMessage = "Failed to connect server";
+                    }
+                } else {
+                    String result = new String(networkResponse.data);
+                    try {
+                        JSONObject response = new JSONObject(result);
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+
+                        Log.e("Error Status", status);
+                        Log.e("Error Message", message);
+
+                        if (networkResponse.statusCode == 404) {
+                            errorMessage = "Resource not found";
+                        } else if (networkResponse.statusCode == 401) {
+                            errorMessage = message+" Please login again";
+                        } else if (networkResponse.statusCode == 400) {
+                            errorMessage = message+ " Check your inputs";
+                        } else if (networkResponse.statusCode == 500) {
+                            errorMessage = message+" Something is getting wrong";
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.i("Error", errorMessage);
+                Toast.makeText(AccountActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        };
+    }
+
+    private Response.Listener<NetworkResponse> createListener_uploadProfilePhoto() {
+        return new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                uploadingProfilePhoto = false;
+                String resultResponse = new String(response.data);
+                try {
+                    JSONObject result = new JSONObject(resultResponse);
+                    int status = result.getInt("success");
+                    String errorMessage = result.getString("error_message");
+
+                    if (status == 1) {
+                        // tell everybody you have succed upload image and post strings
+                        Toast.makeText(AccountActivity.this, "Profile photo uploaded successfully.", Toast.LENGTH_SHORT).show();
+                        updateProfilePhotoWhenUploadSucceeded();
+                    } else {
+                        Toast.makeText(AccountActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
 }

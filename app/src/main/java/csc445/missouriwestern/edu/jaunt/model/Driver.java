@@ -66,12 +66,12 @@ public class Driver {
             tmp = jsonObject.getString("profile_photo");
             tmp = (tmp == null || tmp.equalsIgnoreCase("null")) ? null : tmp;
             if(tmp != null){
-                this.hasProfilePhoto = Boolean.parseBoolean(tmp);
+                this.hasProfilePhoto = (Integer.parseInt(tmp) == 1);
             }
             tmp = jsonObject.getString("license_photo");
             tmp = (tmp == null || tmp.equalsIgnoreCase("null")) ? null : tmp;
             if(tmp != null){
-                this.hasLicensePhoto = Boolean.parseBoolean(tmp);
+                this.hasLicensePhoto = Integer.parseInt(tmp) == 1;
             }
 
             JSONObject addressJson = jsonObject.getJSONObject("address");
@@ -79,6 +79,7 @@ public class Driver {
                 gms_id = addressJson.getString("gms_id");
                 address = AddressUtils.jsonToAddress(addressJson);
             }
+
         }catch (Exception e){
             Log.d(TAG, "Error unwrapping driver from JSONObject");
         }
