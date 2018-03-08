@@ -54,8 +54,6 @@ import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleyMultipart
 import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleySingleton;
 import io.paperdb.Paper;
 
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-
 public class AccountActivity extends BaseActivity {
 
     private TabLayout tabLayout;
@@ -120,7 +118,7 @@ public class AccountActivity extends BaseActivity {
                     Glide.with(this).
                             load(image_url).
                             apply(signatureOptions).
-                            transition(withCrossFade()).
+                            //transition(withCrossFade()).
                             into(profileImageView);
                 }
             }

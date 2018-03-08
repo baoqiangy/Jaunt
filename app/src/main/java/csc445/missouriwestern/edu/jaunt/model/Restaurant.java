@@ -1,6 +1,8 @@
 package csc445.missouriwestern.edu.jaunt.model;
 
 import android.location.Address;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -14,7 +16,7 @@ import java.util.Locale;
  * Created by byan on 3/8/2018.
  */
 
-public class Restaurant {
+public class Restaurant implements Parcelable{
     private int rid;
     private String name;
     private String telephone;
@@ -44,6 +46,29 @@ public class Restaurant {
             Log.d(TAG, e.getMessage());
         }
     }
+
+    protected Restaurant(Parcel in) {
+        rid = in.readInt();
+        name = in.readString();
+        telephone = in.readString();
+        logo = in.readString();
+        gms_id = in.readString();
+        latLng = in.readParcelable(LatLng.class.getClassLoader());
+        address = in.readParcelable(Address.class.getClassLoader());
+        TAG = in.readString();
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 
     public int getRid() {
         return rid;
@@ -107,5 +132,22 @@ public class Restaurant {
 
     public void setMenu(RestaurantMenu menu) {
         this.menu = menu;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.rid);
+        dest.writeString(this.name);
+        dest.writeValue(this.telephone);
+        dest.writeString(this.logo);
+        dest.writeString(this.gms_id);
+        dest.writeValue(this.latLng);
+        dest.writeValue(this.address);
+        dest.writeValue(this.menu);
     }
 }

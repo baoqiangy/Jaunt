@@ -47,7 +47,7 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         Restaurant restaurant = restaurants.get(position);
         // bind your view here
         // code moved to the holder class itself with a listener for click event
-        ((RestaurantItemViewHolder) holder).bindView(restaurant, listener);
+        holder.bindView(restaurant, listener);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
     }
 
     public interface RecyclerViewItemOnClickedListener{
-        public void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder);
+        void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder);
     }
 }
