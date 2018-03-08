@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="243dp"
         android:contentDescription="@string/applogo"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/ic_jauntlogo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"

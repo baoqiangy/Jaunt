@@ -54,6 +54,8 @@ import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleyMultipart
 import csc445.missouriwestern.edu.jaunt.thirdparty.imageuploader.VolleySingleton;
 import io.paperdb.Paper;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 public class AccountActivity extends BaseActivity {
 
     private TabLayout tabLayout;
@@ -67,6 +69,8 @@ public class AccountActivity extends BaseActivity {
     private String selectedProfilePhotoPath;
     private RequestOptions signatureOptions;
     private boolean uploadingProfilePhoto;
+    private SharedPreferences prefs;
+    private String book_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +88,11 @@ public class AccountActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean signed_in = prefs.getBoolean("signed_in", false);
         if(signed_in){
             String email = prefs.getString("email", null);
-            String book_name = "driver_"+email;
+            book_name = "driver_"+email;
             me = Paper.book(book_name).read(Globals.ACCOUNT_INFO_KEY);
             if(me != null){
                 profileNameTextView.setText(me.getFirstName() +" " + me.getLastName());
@@ -105,11 +109,18 @@ public class AccountActivity extends BaseActivity {
                 if(me.isHasProfilePhoto()){
                     String image_url = Globals.SERVER_URL + "/images/driver/profile_" + me.getDriverId() + ".jpg";
                     if(signatureOptions == null){
-                        signatureOptions = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+                        RequestOptions currentSignature = Paper.book(book_name).read(Globals.PROFILE_PHOTO_SIGNATURE);
+                        if(currentSignature == null){
+                            signatureOptions = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+                            Paper.book(book_name).write(Globals.PROFILE_PHOTO_SIGNATURE, signatureOptions);
+                        }else{
+                            signatureOptions = currentSignature;
+                        }
                     }
                     Glide.with(this).
                             load(image_url).
                             apply(signatureOptions).
+                            transition(withCrossFade()).
                             into(profileImageView);
                 }
             }
@@ -225,24 +236,26 @@ public class AccountActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.account_logout:
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(AccountActivity.this);
                 prefs.edit().putBoolean("signed_in", false).remove("email").commit();
                 finish();
                 return true;
             case R.id.account_profile:
                 //Toast.makeText(AccountActivity.this, "Display UI for profile...", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AccountActivity.this, ProfileActivity.class);
+                intent = new Intent(AccountActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.account_settings:
                 //Toast.makeText(AccountActivity.this, "Display UI for settings...", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.driver_register:
+                intent = new Intent(AccountActivity.this, RestaurantsActivity.class);
+                startActivity(intent);
                 //Toast.makeText(AccountActivity.this, "Display UI for driver registration...", Toast.LENGTH_SHORT).show();
                 return true;
         }
@@ -290,12 +303,18 @@ public class AccountActivity extends BaseActivity {
         me.setHasProfilePhoto(true);
         Paper.book("driver_" + me.getEmail()).write(Globals.ACCOUNT_INFO_KEY, me);
 
+        //only updating the cache key since the image is also displayed
+        //this will avoid the flashing that happens when the same image
+        //is reloaded remotely
+        //into(profileImageView);
+
         String image_url = Globals.SERVER_URL + "/images/driver/profile_" + me.getDriverId() + ".jpg";
         signatureOptions = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
         Glide.with(this).
                 load(image_url).
                 apply(signatureOptions);
-                //into(profileImageView);
+
+        Paper.book(book_name).write(Globals.PROFILE_PHOTO_SIGNATURE, signatureOptions);
     }
 
     private Response.ErrorListener createErrorListener_updateProfilePhoto() {

@@ -8,9 +8,12 @@ import csc445.missouriwestern.edu.jaunt.extensions.datastructure.CaseInsensitive
 
 public class Globals {
     //Web and Database Server
-    public static final String SERVER_URL = "http://ec2-34-211-83-145.us-west-2.compute.amazonaws.com/driver";
+    public static final String SERVER_DOMAIN = "http://ec2-34-211-83-145.us-west-2.compute.amazonaws.com";
+    public static final String SERVER_URL = SERVER_DOMAIN + "/driver";
     public static final String PLACE_HISTORY_KEY = "PlaceHistoryRecords";
     public static final String ACCOUNT_INFO_KEY = "AccountInfo";
+    public static final String GUEST_BOOK = "GuestBook";
+    public static final String PROFILE_PHOTO_SIGNATURE = "Profile_Photo_Signature";
 
     public static final CaseInsensitiveMap states = new CaseInsensitiveMap(){{
         put("Alabama","AL");
