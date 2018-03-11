@@ -3,6 +3,8 @@ package csc445.missouriwestern.edu.jaunt;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
@@ -10,7 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -64,7 +68,19 @@ public class RestaurantsActivity extends AppCompatActivity {
         //actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         //actionBar.setBackgroundDrawable(new ColorDrawable(R.color.colorFocus));
-        actionBar.setTitle("Restaurants");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        TextView tv = new TextView(context);
+        Typeface face = Typeface.createFromAsset(getAssets(),
+                "fonts/AvenirNextCondensed-Regular.ttf");
+        tv.setTypeface(face);
+        tv.setTextColor(Color.WHITE);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f);
+        tv.setText("Restaurants");
+
+        actionBar.setCustomView(tv);
+        //actionBar.setTitle("Restaurants");
         //actionBar.show();
     }
 

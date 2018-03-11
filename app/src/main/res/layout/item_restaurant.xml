@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="3dp"
     android:layout_marginBottom="3dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
+    android:layout_marginTop="3dp"
     android:background="@color/white">
 
     <ImageView
@@ -23,22 +23,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextView
         android:id="@+id/restaurant_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:includeFontPadding="false"
         android:text="Donut Shop"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:includeFontPadding="false"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/flash_image"
         app:layout_constraintStart_toEndOf="@+id/restaurant_image"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextView
         android:id="@+id/restaurant_street"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -46,18 +47,28 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:text="4523 Frederick Ave."
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/flash_image"
         app:layout_constraintStart_toEndOf="@+id/restaurant_image"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_name" />
 
-    <TextView
+    <csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextView
         android:id="@+id/restaurant_city_state"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Saint Joseph, MO "
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/flash_image"
         app:layout_constraintStart_toEndOf="@+id/restaurant_image"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_street" />
+
+    <ImageView
+        android:id="@+id/flash_image"
+        android:layout_width="36dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_circle_accent_48dp" />
 </android.support.constraint.ConstraintLayout>

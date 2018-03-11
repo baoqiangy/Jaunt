@@ -55,6 +55,18 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         return restaurants.size();
     }
 
+    @Override
+    public void onViewAttachedToWindow(RestaurantItemViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        holder.startFlashing();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RestaurantItemViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.stopFlashing();
+    }
+
     public interface RecyclerViewItemOnClickedListener{
         void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder);
     }
