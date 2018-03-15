@@ -12,6 +12,8 @@ android {
         applicationId "csc445.missouriwestern.edu.jaunt"
         minSdkVersion 24
         targetSdkVersion 27
+        renderscriptTargetApi 24
+        renderscriptSupportModeEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -50,4 +52,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     compile 'com.android.volley:volley:1.1.0'
     compile 'com.spothero.emailvalidator:EmailValidator:1.0.0@aar'
+    compile 'com.wonderkiln:blurkit:1.0.0'
+    compile 'com.google.code.gson:gson:2.8.2'
 }

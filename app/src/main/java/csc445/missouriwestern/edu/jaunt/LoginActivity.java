@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout;
 import csc445.missouriwestern.edu.jaunt.model.Driver;
 import csc445.missouriwestern.edu.jaunt.utils.fonts.FontChangeCrawler;
+import csc445.missouriwestern.edu.jaunt.utils.userinfo.PersistenceWrapper;
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity {
@@ -176,10 +177,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         JSONObject jsonObject = response.getJSONObject("driver_profile");
                         Driver me = new Driver(jsonObject);
+                        PersistenceWrapper.saveHoursRecordsJsonArray(jsonObject.getJSONArray("hours_json"));
                         String book_name = "driver_"+email;
                         Paper.book(book_name).write(Globals.ACCOUNT_INFO_KEY, me);
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                        prefs.edit().putBoolean("signed_in", true).putString("email", email).commit();
+                        prefs.edit().putBoolean("signed_in", true).putString("email", email).putInt("driverId", me.getDriverId()).commit();
                         //prefs.edit().remove("email").putBoolean("signed_in", false).commit();
                         goto_account();
                     }else{

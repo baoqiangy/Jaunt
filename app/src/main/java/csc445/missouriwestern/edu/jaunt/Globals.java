@@ -14,6 +14,8 @@ public class Globals {
     public static final String ACCOUNT_INFO_KEY = "AccountInfo";
     public static final String GUEST_BOOK = "GuestBook";
     public static final String PROFILE_PHOTO_SIGNATURE = "Profile_Photo_Signature";
+    public static final String HOURS_RECORD_KEY = "HoursRecord";
+    public static final String AVAILABILITY_KEY = "Availability";
 
     public static final CaseInsensitiveMap states = new CaseInsensitiveMap(){{
         put("Alabama","AL");

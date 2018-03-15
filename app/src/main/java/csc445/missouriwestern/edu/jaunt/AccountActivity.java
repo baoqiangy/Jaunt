@@ -196,7 +196,7 @@ public class AccountActivity extends BaseActivity {
                     tabLayout.getTabAt(i).setIcon(r);
                 }
             }
-            tabLayout.getTabAt(2).select();
+            tabLayout.getTabAt(0).select();
         }
     }
 

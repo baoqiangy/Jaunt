@@ -39,7 +39,7 @@
 
     <ImageView
         android:id="@+id/hours_record_more_vert"
-        android:layout_width="30dp"
+        android:layout_width="24dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
@@ -48,6 +48,6 @@
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_circle_24dp" />
+        app:srcCompat="@drawable/ic_mode_edit_accent_24dp" />
 
 </android.support.constraint.ConstraintLayout>

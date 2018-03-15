@@ -9,4 +9,5 @@
     <color name="colorFocus">#123f3f41</color>
     <color name="black">#000000</color>
     <color name="Alexs">#00d9ff</color>
+    <color name="semiDarkTransparent">#66000000</color>
 </resources>

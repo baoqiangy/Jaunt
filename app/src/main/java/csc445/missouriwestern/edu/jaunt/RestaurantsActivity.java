@@ -42,7 +42,7 @@ public class RestaurantsActivity extends AppCompatActivity {
     private RestaurantRecyclerViewAdapter restaurantRecyclerViewAdapter;
     private List<Restaurant> restaurants;
     RestaurantRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener;
-
+    private LinearLayoutManager recyclerViewLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,15 +50,21 @@ public class RestaurantsActivity extends AppCompatActivity {
         context = this;
         restaurantRecyclerView = findViewById(R.id.restaurant_recyclerview);
         Paper.book(Globals.GUEST_BOOK).read("restaurants", null);
+        recyclerViewLayoutManager = new LinearLayoutManager(context);
         if(restaurants == null) {
             fetchLocalRestaurants();
         }else{
-            restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(context, restaurants);
-            createListenerIfNotExist();
-            restaurantRecyclerViewAdapter.setListener(listener);
-            restaurantRecyclerView.setAdapter(restaurantRecyclerViewAdapter);
+            updateRecyclerView();
         }
         customizeActionBar();
+    }
+
+    private void updateRecyclerView() {
+        restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(context, restaurants);
+        createListenerIfNotExist();
+        restaurantRecyclerViewAdapter.setListener(listener);
+        restaurantRecyclerView.setAdapter(restaurantRecyclerViewAdapter);
+        restaurantRecyclerView.setLayoutManager(recyclerViewLayoutManager);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -147,11 +153,7 @@ public class RestaurantsActivity extends AppCompatActivity {
                             restaurants.add(new Restaurant(jsonObject));
                         }
 
-                        restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(context, restaurants);
-                        createListenerIfNotExist();
-                        restaurantRecyclerViewAdapter.setListener(listener);
-                        restaurantRecyclerView.setAdapter(restaurantRecyclerViewAdapter);
-                        restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                        updateRecyclerView();
 
                         Paper.book(Globals.GUEST_BOOK).write("restaurants", restaurants);
                     }else{

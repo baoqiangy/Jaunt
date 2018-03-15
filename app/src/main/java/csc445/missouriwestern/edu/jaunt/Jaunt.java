@@ -3,6 +3,8 @@ package csc445.missouriwestern.edu.jaunt;
 import android.app.Application;
 import android.content.Context;
 
+import com.wonderkiln.blurkit.BlurKit;
+
 import io.paperdb.Paper;
 
 /**
@@ -16,6 +18,7 @@ public class Jaunt extends Application {
         super.onCreate();
         Jaunt.context = getApplicationContext();
         Paper.init(getApplicationContext());
+        BlurKit.init(this);
     }
 
     public static Context getAppContext() {

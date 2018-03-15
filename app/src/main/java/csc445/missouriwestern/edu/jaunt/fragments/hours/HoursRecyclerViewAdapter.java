@@ -1,6 +1,7 @@
 package csc445.missouriwestern.edu.jaunt.fragments.hours;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import csc445.missouriwestern.edu.jaunt.Globals;
+import csc445.missouriwestern.edu.jaunt.HoursEditActivity;
 import csc445.missouriwestern.edu.jaunt.R;
 
 /**
@@ -91,6 +94,12 @@ public class HoursRecyclerViewAdapter extends RecyclerView.Adapter<HoursRecycler
             selected_position = getAdapterPosition();
             notifyItemChanged(selected_position);
             // Do your another stuff for your onClick
+
+            HoursRecord hoursRecord = records.get(selected_position);
+            Intent intent = new Intent(context, HoursEditActivity.class);
+            intent.putExtra(Globals.HOURS_RECORD_KEY, hoursRecord);
+            context.startActivity(intent);
+
         }
 
         public void dehighlight(){

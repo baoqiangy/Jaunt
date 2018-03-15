@@ -55,8 +55,15 @@
 
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".OrderActivity" />
-        <activity android:name=".RestaurantsActivity" android:parentActivityName=".AccountActivity"/>
-        <activity android:name=".RestaurantActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RestaurantsActivity"
+            android:parentActivityName=".AccountActivity" />
+        <activity
+            android:name=".RestaurantActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".HoursEditActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

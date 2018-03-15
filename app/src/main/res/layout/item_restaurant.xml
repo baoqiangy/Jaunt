@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:includeFontPadding="false"
         android:text="Donut Shop"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/flash_image"
@@ -47,6 +47,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:text="4523 Frederick Ave."
+        android:textColor="@color/colorText"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/flash_image"
         app:layout_constraintStart_toEndOf="@+id/restaurant_image"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_name" />
@@ -58,14 +60,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Saint Joseph, MO "
+        android:textColor="@color/colorText"
         app:layout_constraintEnd_toStartOf="@+id/flash_image"
         app:layout_constraintStart_toEndOf="@+id/restaurant_image"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_street" />
 
     <ImageView
         android:id="@+id/flash_image"
-        android:layout_width="36dp"
+        android:layout_width="30dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
