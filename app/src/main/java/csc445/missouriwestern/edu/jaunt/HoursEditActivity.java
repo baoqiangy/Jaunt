@@ -126,7 +126,7 @@ public class HoursEditActivity extends AppCompatActivity {
                 timeRangeRecyclerViewAdapter.setServingStart(servingStart);
                 timeRangeRecyclerViewAdapter.setSelected_position(seqNum);
                 timeRangeRecyclerViewAdapter.notifyDataSetChanged();
-                Toast.makeText(HoursEditActivity.this, "timeRangeClicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HoursEditActivity.this, "timeRangeClicked", Toast.LENGTH_SHORT).show();
             }
         };
     }

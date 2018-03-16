@@ -49,7 +49,7 @@ public class RestaurantsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurants);
         context = this;
         restaurantRecyclerView = findViewById(R.id.restaurant_recyclerview);
-        Paper.book(Globals.GUEST_BOOK).read("restaurants", null);
+        restaurants = Paper.book(Globals.GUEST_BOOK).read("restaurants", null);
         recyclerViewLayoutManager = new LinearLayoutManager(context);
         if(restaurants == null) {
             fetchLocalRestaurants();

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,9 +134,8 @@ public class HoursRecord implements Parcelable{
         if(availability==null){
             return result;
         }
-        for(TimeRange r: availability) {
-            result += r + "\n";
-        }
+
+        result = StringUtils.join(availability, "\n");
         return result;
     }
 

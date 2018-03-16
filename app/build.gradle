@@ -54,4 +54,5 @@ dependencies {
     compile 'com.spothero.emailvalidator:EmailValidator:1.0.0@aar'
     compile 'com.wonderkiln:blurkit:1.0.0'
     compile 'com.google.code.gson:gson:2.8.2'
+    compile 'org.apache.commons:commons-lang3:3.7'
 }
