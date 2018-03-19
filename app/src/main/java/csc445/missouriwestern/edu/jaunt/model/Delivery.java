@@ -10,15 +10,27 @@ import java.util.List;
 
 public class Delivery {
     private int driverId;
+    private Restaurant restaurant;
     //including totalAmount, deliveryFee and tips
     private List<Order> orders; //maybe group order
     private LocalTime scheduledPickupTime;
+    private LocalTime scheduledDeliverTime;
     private LocalTime actualPickupTime;
     private LocalTime actualDeliverTime;
 
-    public Delivery(List<Order> orders, LocalTime scheduledPickupTime) {
+    public Delivery(Restaurant restaurant, List<Order> orders, LocalTime scheduledPickupTime, LocalTime scheduledDeliverTime) {
+        this.restaurant = restaurant;
         this.orders = orders;
         this.scheduledPickupTime = scheduledPickupTime;
+        this.scheduledDeliverTime = scheduledDeliverTime;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public int getDriverId() {
@@ -45,6 +57,14 @@ public class Delivery {
         this.scheduledPickupTime = scheduledPickupTime;
     }
 
+    public LocalTime getScheduledDeliverTime() {
+        return scheduledDeliverTime;
+    }
+
+    public void setScheduledDeliverTime(LocalTime scheduledDeliverTime) {
+        this.scheduledDeliverTime = scheduledDeliverTime;
+    }
+
     public LocalTime getActualPickupTime() {
         return actualPickupTime;
     }
@@ -60,6 +80,4 @@ public class Delivery {
     public void setActualDeliverTime(LocalTime actualDeliverTime) {
         this.actualDeliverTime = actualDeliverTime;
     }
-
-
 }

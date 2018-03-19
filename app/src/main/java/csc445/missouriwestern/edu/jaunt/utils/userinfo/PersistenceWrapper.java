@@ -75,4 +75,10 @@ public class PersistenceWrapper {
         }
         return hoursRecords;
     }
+
+    public static JSONArray loadWeatherData(){
+        JSONArray broadcasts = Paper.book(Globals.GUEST_BOOK).read(Globals.WEATHER_KEY);
+
+        return broadcasts;
+    }
 }

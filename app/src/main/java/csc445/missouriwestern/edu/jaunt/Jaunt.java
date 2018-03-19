@@ -16,6 +16,9 @@ public class Jaunt extends Application {
 
     public void onCreate() {
         super.onCreate();
+//        if(PreferencesWrapper.getTimeZone() == null){
+//            PreferencesWrapper.setTimeZone(TimeZone.getDefault());
+//        }
         Jaunt.context = getApplicationContext();
         Paper.init(getApplicationContext());
         BlurKit.init(this);

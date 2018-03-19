@@ -43,4 +43,5 @@
     <string name="address_placeholder_text">803 North 36th Street</string>
     <string name="city_state_placeholder_text">Saint Joseph, MO</string>
     <string name="history_icon">History Icon</string>
+    <string name="openweatherapi_key">c0c2d2644e3d15494fca5f45de12f4dd</string>
 </resources>

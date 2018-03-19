@@ -1,6 +1,10 @@
 package csc445.missouriwestern.edu.jaunt.utils.date;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
+
+import java.util.TimeZone;
 
 /**
  * Created by byan on 3/13/2018.
@@ -13,5 +17,11 @@ public class TimeWrapper {
             str = str.replace("0:", "12:");
         }
         return str;
+    }
+
+    public static DateTime utcToJodaTime(TimeZone timeZone, long unixSeconds){
+        DateTimeZone jodaTimeZone = DateTimeZone.forTimeZone(timeZone);
+        DateTime jodaDateTime = new DateTime(unixSeconds, jodaTimeZone);
+        return jodaDateTime;
     }
 }

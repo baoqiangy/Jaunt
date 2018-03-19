@@ -3,6 +3,8 @@ package csc445.missouriwestern.edu.jaunt.utils.userinfo;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.TimeZone;
+
 import csc445.missouriwestern.edu.jaunt.Globals;
 import csc445.missouriwestern.edu.jaunt.Jaunt;
 
@@ -30,5 +32,14 @@ public class PreferencesWrapper {
     public static String getBookName(){
         if(!isSignedIn()) return Globals.GUEST_BOOK;
         return "driver_" + prefs.getString("email", null);
+    }
+
+    public static void setTimeZone(TimeZone timeZone){
+        prefs.edit().putString("timezoneId", timeZone.getID());
+    }
+
+    public static TimeZone getTimeZone(){
+        if(!isSignedIn() || !prefs.contains("timezoneId")) return TimeZone.getDefault();
+        return TimeZone.getTimeZone(prefs.getString("timezoneId", null));
     }
 }

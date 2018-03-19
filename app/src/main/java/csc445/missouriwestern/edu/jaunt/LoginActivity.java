@@ -29,6 +29,9 @@ import org.json.JSONObject;
 
 import csc445.missouriwestern.edu.jaunt.extensions.ui.CustomTextInputLayout;
 import csc445.missouriwestern.edu.jaunt.model.Driver;
+import csc445.missouriwestern.edu.jaunt.room.AppDatabase;
+import csc445.missouriwestern.edu.jaunt.room.City;
+import csc445.missouriwestern.edu.jaunt.room.CityTableInitializer;
 import csc445.missouriwestern.edu.jaunt.utils.fonts.FontChangeCrawler;
 import csc445.missouriwestern.edu.jaunt.utils.userinfo.PersistenceWrapper;
 import io.paperdb.Paper;
@@ -59,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditTextLayout = findViewById(R.id.password_layout);
         emailEditText = findViewById(R.id.input_email);
         passwordEditText = findViewById(R.id.input_password);
+        //initializeRoomDatabase();
     }
 
     @Override
@@ -215,5 +219,15 @@ public class LoginActivity extends AppCompatActivity {
 
     public void forgotPasswordClicked(View view) {
         Toast.makeText(LoginActivity.this, "Forgot password clicked.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void initializeRoomDatabase(){
+        CityTableInitializer initializer = new CityTableInitializer();
+        initializer.execute();
+    }
+
+    private static City addCity(final AppDatabase db, City city) {
+        db.cityDao().insertAll(city);
+        return city;
     }
 }

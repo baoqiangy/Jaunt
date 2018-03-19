@@ -8,12 +8,10 @@ import java.util.List;
 
 public class Order {
     private Customer customer;
-    private Restaurant restaurant;
     private List<FoodItemOrder> foodItemOrders;
 
-    public Order(Customer customer, Restaurant restaurant, List<FoodItemOrder> foodItemOrders) {
+    public Order(Customer customer, List<FoodItemOrder> foodItemOrders) {
         this.customer = customer;
-        this.restaurant = restaurant;
         this.foodItemOrders = foodItemOrders;
     }
 
@@ -23,14 +21,6 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
     public List<FoodItemOrder> getFoodItemOrders() {
