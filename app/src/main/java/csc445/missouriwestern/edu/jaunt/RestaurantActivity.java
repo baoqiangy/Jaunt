@@ -1,5 +1,6 @@
 package csc445.missouriwestern.edu.jaunt;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -30,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import csc445.missouriwestern.edu.jaunt.model.Restaurant;
-import csc445.missouriwestern.edu.jaunt.utils.places.AddressUtils;
 
 public class RestaurantActivity extends AppCompatActivity {
     private Restaurant restaurant;
@@ -42,14 +41,21 @@ public class RestaurantActivity extends AppCompatActivity {
     private TextView addressTextView;
     private RecyclerView weatherRecyclerView;
     private LinearLayoutManager horizontalLayoutManager;
+    private WeatherRecyclerViewAdapter weatherRecyclerViewAdapter;
     private JSONArray broadcasts;
     private RecyclerView availableDeliveryRecyclerView;
     private LinearLayoutManager verticalLayoutManager;
+    private DeliveryRecyclerViewAdapter deliveryRecyclerViewAdapter;
+    private JSONArray forcasts;
+    private WeatherRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener;
+    private Context context;
+    private String TAG = "TAG_RestaurantActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
+        context = this;
         wireUpWidgets();
         restaurant = (Restaurant) getIntent().getParcelableExtra("restaurant");
         address = restaurant.getAddress();
@@ -66,9 +72,12 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void loadWeatherData() {
+        int city_id = restaurant.getCity_id();
+        if(city_id == 0) return;
+        fetchWeather();
 
-        cityId = AddressUtils.getCityId(address);
-        Log.d("CITY_ID", String.valueOf(cityId));
+        //cityId = AddressUtils.getCityId(address);
+        //Log.d("CITY_ID", String.valueOf(cityId));
 
 //        broadcasts = PersistenceWrapper.loadWeatherData();
 //        if(broadcasts == null){
@@ -122,65 +131,39 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void fetchWeather(){
-        try{
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String script = "list_restaurant.php";
-            JSONObject params = new JSONObject();
-            params.put("units", "metric");
-            params.put("lat", address.getLatitude());
-            params.put("lon", address.getLongitude());
-            params.put("appid", this.getString(R.string.openweatherapi_key));
+        int city_id = restaurant.getCity_id();
+        if(city_id == 0) return;
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                    Globals.OPEN_WEATHER_MAP_SERVER,
-                    params,
-                    createListener_fetchWeather(),
-                    createErrorListener_fetchWeather());
+        String url = String.format(Globals.OPEN_WEATHER_MAP_API, city_id, this.getString(R.string.openweatherapi_key));
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url,
+                createListener_fetchWeather(),
+                createErrorListener_fetchWeather());
 
-            //progressTxtView.setText("Processing ...");
-            requestQueue.add(jsonObjectRequest);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
-    private Response.Listener<JSONObject> createListener_fetchWeather(){
-        return new Response.Listener<JSONObject>() {
+    private Response.Listener<String> createListener_fetchWeather(){
+        return new Response.Listener<String >() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 //progressTxtView.setText("Processing ... Done !");
-//                try{
-//                    int success = response.getInt("cod");
-//                    if(success == 200) {
-//                        int count = response.getInt("cnt");
-//                        JSONArray broadcasts = response.getJSONArray("list");
-//                        for(int i=0; i<broadcasts.length(); i++){
-//
-//                        }
-//                        JSONObject jsonWeather   = response.getJSONObject("weather");
-//                        JSONObject jsonClouds    = response.getJSONObject("clouds");
-//                        JSONObject jsonWind      = response.getJSONObject("wind");
-//                        JSONObject jsonMain      = response.getJSONObject("main");
-//
-//                        restaurants = new ArrayList<Restaurant>();
-//                        JSONObject jsonObject = null;
-//                        for (int i=0; i<jsonObjects.length(); i++) {
-//                            jsonObject = (JSONObject)jsonObjects.get(i);
-//                            restaurants.add(new Restaurant(jsonObject));
-//                        }
-//
-//                        updateRecyclerView();
-//
-//                        Paper.book(Globals.GUEST_BOOK).write("restaurants", restaurants);
-//                    }else{
-//                        Log.d(TAG, response.getString("error_message"));
-//                        Toast.makeText(RestaurantsActivity.this, response.getString("error_message"), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                catch (Exception e){
-//                    e.printStackTrace();
-//                    Toast.makeText(RestaurantsActivity.this, "Exception occurred." + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
+                try{
+                    JSONObject responseJsonObject = new JSONObject(response);
+                    int cod = responseJsonObject.getInt("cod");
+                    if(cod == 200) {
+                        int count = responseJsonObject.getInt("cnt");
+                        forcasts = responseJsonObject.getJSONArray("list");
+                        updateWeatherRecyclerView();
+                    }else{
+                        Toast.makeText(RestaurantActivity.this, "Error when fetching weather info.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(RestaurantActivity.this, "Exception occurred." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         };
     }
@@ -191,8 +174,32 @@ public class RestaurantActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 //progressTxtView.setText("Processing ... Error!");
 //                Log.d(TAG, error.getMessage());
-//                Toast.makeText(RestaurantsActivity.this, "Error response from server - " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RestaurantActivity.this, "Error response from server - " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         };
     }
+
+    private void updateWeatherRecyclerView() {
+        weatherRecyclerViewAdapter = new WeatherRecyclerViewAdapter(context, forcasts);
+        createListenerIfNotExist();
+        weatherRecyclerViewAdapter.setListener(listener);
+        weatherRecyclerView.setAdapter(weatherRecyclerViewAdapter);
+        weatherRecyclerView.setLayoutManager(horizontalLayoutManager);
+
+    }
+
+    private void createListenerIfNotExist(){
+        listener = new WeatherRecyclerViewAdapter.RecyclerViewItemOnClickedListener(){
+            @Override
+            public void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder) {
+                JSONObject selectedCast = ((WeatherItemViewHolder)viewHolder).weatherForcast;
+                try{
+                    Toast.makeText(RestaurantActivity.this, selectedCast.getString("dt_txt"), Toast.LENGTH_SHORT).show();
+                }catch (JSONException e){
+                    Toast.makeText(RestaurantActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
+
 }

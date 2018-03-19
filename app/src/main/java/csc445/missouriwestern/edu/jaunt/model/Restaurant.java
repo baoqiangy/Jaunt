@@ -24,6 +24,7 @@ public class Restaurant implements Parcelable{
     private String gms_id;
     private LatLng latLng;
     private Address address;
+    private int city_id; //for weather info at openweathermap.org
     private RestaurantMenu menu;
 
     private String TAG = "TAG_Restaurant";
@@ -42,6 +43,7 @@ public class Restaurant implements Parcelable{
             this.address.setLocality(basicInfoJson.getString("city"));
             this.address.setAdminArea(basicInfoJson.getString("state"));
             this.address.setPostalCode(basicInfoJson.getString("zipcode"));
+            this.city_id = basicInfoJson.getInt("city_id");
         }catch (JSONException e){
             Log.d(TAG, e.getMessage());
         }
@@ -55,6 +57,7 @@ public class Restaurant implements Parcelable{
         gms_id = (String) in.readSerializable();
         latLng = (LatLng) in.readParcelable(LatLng.class.getClassLoader());
         address = (Address) in.readParcelable(Address.class.getClassLoader());
+        city_id = (Integer) in.readSerializable();
         menu = (RestaurantMenu) in.readParcelable(RestaurantMenu.class.getClassLoader());
     }
 
@@ -126,6 +129,14 @@ public class Restaurant implements Parcelable{
         this.address = address;
     }
 
+    public int getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(int city_id) {
+        this.city_id = city_id;
+    }
+
     public RestaurantMenu getMenu() {
         return menu;
     }
@@ -148,6 +159,7 @@ public class Restaurant implements Parcelable{
         dest.writeSerializable(this.gms_id);
         dest.writeParcelable(this.latLng, flags);
         dest.writeParcelable(this.address, flags);
+        dest.writeSerializable(new Integer(this.city_id));
         dest.writeParcelable(this.menu, flags);
     }
 }

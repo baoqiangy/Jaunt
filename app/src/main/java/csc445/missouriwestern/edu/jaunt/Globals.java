@@ -17,11 +17,10 @@ public class Globals {
     public static final String HOURS_RECORD_KEY = "HoursRecord";
     public static final String AVAILABILITY_KEY = "Availability";
     public static final String WEATHER_KEY = "Weather";
-    public static final String OPEN_WEATHER_MAP_SERVER = "http://api.openweathermap.org/data/2.5/forecast";
     //https://openweathermap.org/weather-conditions
     public static final String OPEN_WEATHER_ICON_FOLDER_URL = "http://openweathermap.org/img/w/";
     public static final String GEONAME_TIMEZONE_API_URL = "http://api.geonames.org/timezone?lat=%f&lng=%f&username=baoqiangy";
-    public static final String OPEN_WEATHER_MAP_API = "http://api.openweathermap.org/data/2.5/forecast?q=%s&units=metric";
+    public static final String OPEN_WEATHER_MAP_API = "http://api.openweathermap.org/data/2.5/forecast?id=%d&appid=%s&units=metric";
 
     public static final CaseInsensitiveMap states = new CaseInsensitiveMap(){{
         put("Alabama","AL");
