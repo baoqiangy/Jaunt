@@ -5,9 +5,13 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -29,7 +34,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import csc445.missouriwestern.edu.jaunt.model.Delivery;
 import csc445.missouriwestern.edu.jaunt.model.Restaurant;
+import csc445.missouriwestern.edu.jaunt.utils.recyclerview.DividerItemDecorator;
 
 public class RestaurantActivity extends AppCompatActivity {
     private Restaurant restaurant;
@@ -39,17 +49,22 @@ public class RestaurantActivity extends AppCompatActivity {
     private LinearLayout blurView;
     private TextView nameTextView;
     private TextView addressTextView;
+
     private RecyclerView weatherRecyclerView;
     private LinearLayoutManager horizontalLayoutManager;
     private WeatherRecyclerViewAdapter weatherRecyclerViewAdapter;
-    private JSONArray broadcasts;
+    private JSONArray forcasts;
+    private WeatherRecyclerViewAdapter.RecyclerViewItemOnClickedListener weatherItemClickListener;
+
     private RecyclerView availableDeliveryRecyclerView;
     private LinearLayoutManager verticalLayoutManager;
     private DeliveryRecyclerViewAdapter deliveryRecyclerViewAdapter;
-    private JSONArray forcasts;
-    private WeatherRecyclerViewAdapter.RecyclerViewItemOnClickedListener listener;
+    private DeliveryRecyclerViewAdapter.RecyclerViewItemOnClickedListener deliveryItemClickListener;
+    private List<Delivery> availableDeliveries;
     private Context context;
     private String TAG = "TAG_RestaurantActivity";
+    private boolean favorite;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +84,11 @@ public class RestaurantActivity extends AppCompatActivity {
             generateBlurEffectForBottomTextViews();
         }
         loadWeatherData();
+        loadAvailableDeliveries();
+    }
+
+    private void loadAvailableDeliveries() {
+        fetchAvailableDeliveries();
     }
 
     private void loadWeatherData() {
@@ -121,6 +141,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private void wireUpWidgets() {
         appBarImageView = findViewById(R.id.app_bar_image);
+        fab = findViewById(R.id.favorite_fab);
         blurView = findViewById(R.id.restaurant_info_blurview);
         nameTextView = blurView.findViewById(R.id.restaurant_name);
         addressTextView = blurView.findViewById(R.id.appbar_address);
@@ -182,14 +203,14 @@ public class RestaurantActivity extends AppCompatActivity {
     private void updateWeatherRecyclerView() {
         weatherRecyclerViewAdapter = new WeatherRecyclerViewAdapter(context, forcasts);
         createListenerIfNotExist();
-        weatherRecyclerViewAdapter.setListener(listener);
+        weatherRecyclerViewAdapter.setListener(weatherItemClickListener);
         weatherRecyclerView.setAdapter(weatherRecyclerViewAdapter);
         weatherRecyclerView.setLayoutManager(horizontalLayoutManager);
 
     }
 
     private void createListenerIfNotExist(){
-        listener = new WeatherRecyclerViewAdapter.RecyclerViewItemOnClickedListener(){
+        weatherItemClickListener = new WeatherRecyclerViewAdapter.RecyclerViewItemOnClickedListener(){
             @Override
             public void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder) {
                 JSONObject selectedCast = ((WeatherItemViewHolder)viewHolder).weatherForcast;
@@ -200,6 +221,107 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             }
         };
+
+        deliveryItemClickListener = new DeliveryRecyclerViewAdapter.RecyclerViewItemOnClickedListener() {
+            @Override
+            public void recyclerViewItemClicked(RecyclerView.ViewHolder viewHolder) {
+
+            }
+        };
     }
 
+    private void fetchAvailableDeliveries() {
+        try{
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            String script = "pending_delivery_orders.php";
+            JSONObject params = new JSONObject();
+            params.put("rid", "14");
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    Globals.SERVER_URL + "/" + script,
+                    params,
+                    createListener_fetchAvailableDeliveries(),
+                    createErrorListener_fetchAvailableDeliveries());
+
+            //progressTxtView.setText("Processing ...");
+            requestQueue.add(jsonObjectRequest);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private Response.Listener<JSONObject> createListener_fetchAvailableDeliveries(){
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //progressTxtView.setText("Processing ... Done !");
+                try{
+                    int success = response.getInt("success");
+                    if(success == 1) {
+
+                        JSONArray jsonObjects = response.getJSONArray("available_deliveries");
+                        availableDeliveries = new ArrayList<Delivery>();
+                        JSONObject jsonObject = null;
+                        for (int i=0; i<jsonObjects.length(); i++) {
+                            jsonObject = (JSONObject)jsonObjects.get(i);
+                            availableDeliveries.add(new Delivery(jsonObject));
+                            availableDeliveries.add(new Delivery(jsonObject));
+                            availableDeliveries.add(new Delivery(jsonObject));
+                            availableDeliveries.add(new Delivery(jsonObject));
+                            availableDeliveries.add(new Delivery(jsonObject));
+                            availableDeliveries.add(new Delivery(jsonObject));
+                            availableDeliveries.add(new Delivery(jsonObject));
+                        }
+
+                        updateAvailableDeliveryRecyclerView();
+
+                    }else{
+                        Log.d(TAG, response.getString("error_message"));
+                        Toast.makeText(RestaurantActivity.this, response.getString("error_message"), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(RestaurantActivity.this, "Exception occurred." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
+
+    private Response.ErrorListener createErrorListener_fetchAvailableDeliveries(){
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //progressTxtView.setText("Processing ... Error!");
+                Log.d(TAG, error.getMessage());
+                Toast.makeText(RestaurantActivity.this, "Error response from server - " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    private void updateAvailableDeliveryRecyclerView() {
+        deliveryRecyclerViewAdapter = new DeliveryRecyclerViewAdapter(context, availableDeliveries);
+        createListenerIfNotExist();
+        deliveryRecyclerViewAdapter.setListener(deliveryItemClickListener);
+        availableDeliveryRecyclerView.setAdapter(deliveryRecyclerViewAdapter);
+
+        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(availableDeliveryRecyclerView.getContext(),
+        //        verticalLayoutManager.getOrientation());
+        //availableDeliveryRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider));
+        availableDeliveryRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        availableDeliveryRecyclerView.setLayoutManager(verticalLayoutManager);
+    }
+
+    public void toggleFavorite(View view) {
+        favorite = !favorite;
+        if(favorite){
+            fab.setImageResource(R.drawable.ic_favorite_white_solid_24dp);
+        }else{
+            fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+        }
+        Toast.makeText(this, "Toggling favorite for this restaurant", Toast.LENGTH_SHORT).show();
+    }
 }

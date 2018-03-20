@@ -1,5 +1,12 @@
 package csc445.missouriwestern.edu.jaunt.model;
 
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import csc445.missouriwestern.edu.jaunt.Jaunt;
+
 /**
  * Created by byan on 3/15/2018.
  */
@@ -17,6 +24,18 @@ public class Customer {
         this.lastName = lastName;
         this.phone = phone;
         this.isHost = isHost;
+    }
+
+    public Customer(JSONObject jsonObject){
+        try{
+            this.id = jsonObject.getInt("ownerID");
+            this.firstName = jsonObject.getString("ownerFirstName");
+            this.lastName = jsonObject.getString("ownerLastName");
+            this.phone = jsonObject.getString("ownerPhone");
+            this.isHost = false;
+        }catch (JSONException e){
+            Toast.makeText(Jaunt.getAppContext(), "Constructing Customer - "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public int getId() {

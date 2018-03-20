@@ -1,5 +1,13 @@
 package csc445.missouriwestern.edu.jaunt.model;
 
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import csc445.missouriwestern.edu.jaunt.Jaunt;
+
 /**
  * Created by byan on 3/15/2018.
  */
@@ -15,6 +23,18 @@ public class FoodItemOrder {
         this.options = options;
         this.paidPrice = paidPrice;
         this.qty = qty;
+    }
+
+    public FoodItemOrder(JSONObject jsonObject){
+        try{
+            this.foodItem = new FoodItem(jsonObject);
+            this.options = generateOptionsString(jsonObject.getJSONArray("options"));
+            this.paidPrice = jsonObject.getDouble("originalprice") - jsonObject.getDouble("discount");
+            this.qty = jsonObject.getInt("qty");
+        }
+        catch (JSONException e){
+            Toast.makeText(Jaunt.getAppContext(), "Constructing FoodItemOrder - "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public FoodItem getFoodItem() {
@@ -47,5 +67,23 @@ public class FoodItemOrder {
 
     public void setQty(int qty) {
         this.qty = qty;
+    }
+
+    public String generateOptionsString(JSONArray jsonArray){
+        String optionString = "";
+        try {
+            for(int i=0; i<jsonArray.length(); i++){
+                JSONObject option = jsonArray.getJSONObject(i);
+                JSONArray subOptions = option.getJSONArray("options");
+                for(int j=0; j<subOptions.length(); j++){
+                    JSONObject suboption = subOptions.getJSONObject(j);
+                    optionString += suboption.getString("description") +" x "+ suboption.getInt("qty");
+                }
+            }
+        }catch (JSONException e){
+            Toast.makeText(Jaunt.getAppContext(), "Constructing options string - "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            return "";
+        }
+        return optionString;
     }
 }

@@ -16,10 +16,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/distance_label"
+        android:id="@+id/distance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="10dp"
         android:text="Dist. 32 miles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/delivery_address" />
@@ -28,11 +28,10 @@
         android:id="@+id/amount_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Amount"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/delivery_address" />
+        app:layout_constraintStart_toStartOf="@+id/deliver_time"
+        app:layout_constraintTop_toBottomOf="@+id/deliver_time" />
 
     <TextView
         android:id="@+id/tips_label"
@@ -59,6 +58,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:text="$100.00"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/amount_label"
         app:layout_constraintTop_toBottomOf="@+id/amount_label" />
@@ -68,6 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="$100.00"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="@+id/tips_label"
         app:layout_constraintTop_toTopOf="@+id/delivery_fee" />
 
@@ -76,15 +77,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="$100.00"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="@+id/delivery_fee_label"
         app:layout_constraintTop_toTopOf="@+id/order_amount" />
 
     <Button
         android:id="@+id/btn_request"
-        android:layout_width="120dp"
-        android:layout_height="0dp"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/bg_submit_btn_small_angle"
         android:drawableStart="@drawable/ic_local_taxi_white_24dp"
         android:onClick="requestClicked"
@@ -94,9 +96,27 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tips"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tips_label" />
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/pickup_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/delivery_address" />
+
+    <TextView
+        android:id="@+id/deliver_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/pickup_time"
+        app:layout_constraintTop_toBottomOf="@+id/pickup_time" />
 
 </android.support.constraint.ConstraintLayout>

@@ -25,7 +25,11 @@ public class AddressUtils {
         Address address = null;
         try{
             address = new Address(Locale.getDefault());
-            address.setAddressLine(0, jsonObject.getString("street1"));
+            if(jsonObject.getString("streetAddress") != null){
+                address.setAddressLine(0, jsonObject.getString("streetAddress"));
+            }else{
+                address.setAddressLine(0, jsonObject.getString("street1"));
+            }
             address.setLocality(jsonObject.getString("city"));
             address.setAdminArea(jsonObject.getString("state"));
             address.setPostalCode(jsonObject.getString("zipcode"));
@@ -102,5 +106,11 @@ public class AddressUtils {
             Toast.makeText(Jaunt.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return closestCityId;
+    }
+
+    public static String addressToString(Address address){
+        return address.getAddressLine(0) +", "+
+                address.getLocality() + " " + address.getAdminArea() +" "+
+                address.getPostalCode();
     }
 }

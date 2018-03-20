@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 import csc445.missouriwestern.edu.jaunt.utils.date.TimeWrapper;
 
@@ -49,10 +48,10 @@ public class WeatherItemViewHolder extends RecyclerView.ViewHolder  implements V
             try {
                 DateFormat df = DateFormat.getDateTimeInstance();
                 String day = df.format(new Date(weatherForcast.getLong("dt")*1000));
-                day = TimeWrapper.jodaTimeToDateStr(TimeWrapper.utcToJodaTime(TimeZone.getDefault(), weatherForcast.getLong("dt")));
+                day = TimeWrapper.utcToString(weatherForcast.getLong("dt"), "h a");
                 weekdayTextView.setText(day);
                 Glide.with(context).load(Globals.OPEN_WEATHER_ICON_FOLDER_URL+weatherForcast.getJSONArray("weather").getJSONObject(0).getString("icon")+".png").into(weatherImage);
-                weatherStatus.setText(weatherForcast.getJSONArray("weather").getJSONObject(0).getString("main") + "\n" + String.format("%.2f ℃", weatherForcast.getJSONObject("main").getDouble("temp")));
+                weatherStatus.setText(weatherForcast.getJSONArray("weather").getJSONObject(0).getString("main") + "\n" + String.format("%.1f ℃", weatherForcast.getJSONObject("main").getDouble("temp")));
                 //                cityField.setText(json.getString("name").toUpperCase(Locale.US) +
 //                        ", " +
 //                        json.getJSONObject("sys").getString("country"));
