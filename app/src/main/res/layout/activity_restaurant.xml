@@ -46,7 +46,6 @@
             android:layout_height="match_parent"
             tools:context="csc445.missouriwestern.edu.jaunt.RestaurantActivity">
 
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/weather_recyclerview"
                 android:layout_width="match_parent"

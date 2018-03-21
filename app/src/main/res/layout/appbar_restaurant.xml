@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="toggleFavorite"
@@ -32,7 +33,7 @@
         android:tint="@android:color/white"
         app:backgroundTint="?android:attr/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/restaurant_info_blurview"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintStart_toStartOf="@+id/restaurant_info_blurview" />
 
     <LinearLayout
         android:id="@+id/restaurant_info_blurview"
