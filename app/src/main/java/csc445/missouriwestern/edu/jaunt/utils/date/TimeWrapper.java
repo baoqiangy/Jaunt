@@ -56,4 +56,33 @@ public class TimeWrapper {
         return new DateTime();
     }
 
+    public static long difference(Date startDate, Date endDate, int differenceUnit) {
+        //milliseconds
+        long difference = endDate.getTime() - startDate.getTime();
+
+        //System.out.println("startDate : " + startDate);
+        //System.out.println("endDate : "+ endDate);
+        //System.out.println("difference : " + difference);
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        switch (differenceUnit){
+            case 0:
+                long elapsedDays = difference / daysInMilli;
+                return elapsedDays;
+            case 1:
+                long elapsedHours = difference / hoursInMilli;
+                return elapsedHours;
+            case 2:
+                long elapsedMinutes = difference / minutesInMilli;
+                return elapsedMinutes;
+            case 3:
+                long elapsedSeconds = difference / secondsInMilli;
+                return elapsedSeconds;
+        }
+        return difference;
+    }
 }

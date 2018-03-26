@@ -25,9 +25,9 @@ public class AddressUtils {
         Address address = null;
         try{
             address = new Address(Locale.getDefault());
-            if(jsonObject.getString("streetAddress") != null){
+            if(jsonObject.has("streetAddress")){
                 address.setAddressLine(0, jsonObject.getString("streetAddress"));
-            }else{
+            }else if(jsonObject.has("street1")){
                 address.setAddressLine(0, jsonObject.getString("street1"));
             }
             address.setLocality(jsonObject.getString("city"));

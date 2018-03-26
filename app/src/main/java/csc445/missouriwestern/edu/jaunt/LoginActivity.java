@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -38,6 +39,7 @@ import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private ConstraintLayout loginLayout;
     private ImageView imageName;
     private Driver driver;
     private CustomTextInputLayout emailEditTextLayout;
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void wireUpInputFields() {
+        loginLayout = findViewById(R.id.login_layout);
         emailEditTextLayout = findViewById(R.id.email_layout);
         passwordEditTextLayout = findViewById(R.id.password_layout);
         emailEditText = findViewById(R.id.input_email);
@@ -83,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             emailEditText.getText().clear();
             passwordEditText.getText().clear();
+            loginLayout.requestFocus();
         }
     }
 
@@ -218,7 +222,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void forgotPasswordClicked(View view) {
-        Toast.makeText(LoginActivity.this, "Forgot password clicked.", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+        startActivity(intent);
+        //Toast.makeText(LoginActivity.this, "Forgot password clicked.", Toast.LENGTH_SHORT).show();
     }
 
     private void initializeRoomDatabase(){

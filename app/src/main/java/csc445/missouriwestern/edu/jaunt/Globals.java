@@ -16,6 +16,7 @@ public class Globals {
     public static final String PROFILE_PHOTO_SIGNATURE = "Profile_Photo_Signature";
     public static final String HOURS_RECORD_KEY = "HoursRecord";
     public static final String AVAILABILITY_KEY = "Availability";
+    public static final int MY_SOCKET_TIMEOUT_MS = 10000;
     public static final String WEATHER_KEY = "Weather";
     //https://openweathermap.org/weather-conditions
     public static final String OPEN_WEATHER_ICON_FOLDER_URL = "http://openweathermap.org/img/w/";
@@ -95,4 +96,7 @@ public class Globals {
         put("Wyoming","WY");
         put("Yukon Territory","YT");
     }};
+    public static final String PASS_RESET_VERIFICATION_CODE = "Pass_Reset_Verification_Code";
+    public static final String PASS_RESET_VERIFICATION_CODE_SAVE_TIME = "Pass_Reset_Verification_Code_Save_Time";
+    public static final String PASS_RESET_VERIFICATION_EMAIL = "Pass_Reset_Verification_Email";
 }
