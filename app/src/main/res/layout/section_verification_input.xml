@@ -4,7 +4,7 @@
     android:id="@+id/verification_input_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <EditText
         android:id="@+id/code_digit1"
